@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monty Boey | Personal Site & Essays</title>
+    <title>Monty Boey | Personal Site & Writing</title>
     <style>
         * {
             box-sizing: border-box;
@@ -79,6 +79,48 @@
             padding-bottom: 8px;
         }
 
+        .about-content {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .about-content p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+            color: #4a5568;
+        }
+
+        .about-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .pillar-card {
+            background: #f7fafc;
+            border: 1px solid #edf2f7;
+            padding: 16px;
+            border-radius: 6px;
+        }
+
+        .pillar-card h3 {
+            font-size: 1.1rem;
+            color: #2b6cb0;
+            margin-bottom: 6px;
+        }
+
+        .pillar-card p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
         .card-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -133,31 +175,57 @@
         <nav>
             <a href="#" class="logo">Monty Boey</a>
             <div class="nav-links">
+                <a href="#about">About</a>
                 <a href="#writing">Writing</a>
                 <a href="#projects">Projects</a>
-                <a href="#about">About</a>
             </div>
         </nav>
 
         <div class="hero">
-            <h1>Explorer, writer, and engineer.</h1>
-            <p>Welcome to my personal corner of the web. Here I publish travel reflections, thoughts on endurance, and notes on technical projects.</p>
+            <h1>Monty Boey</h1>
+            <p>Electrical engineering student, endurance enthusiast, and writer exploring culture, systems, and human connection.</p>
         </div>
     </header>
 
     <main>
+        <section id="about" class="section">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <p>G'day, I'm Monty. I am an electrical engineering student based in Canberra with a deep curiosity for how complex systems work—both in technology and in society.</p>
+                
+                <p>When I am not working through hardware problems or technical designs, I focus my energy on endurance pursuits and creative writing. Inspired by minimal travel and long-form observation, I use this site to document lessons from the road, personal philosophy, and technical projects.</p>
+
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <h3>Engineering</h3>
+                        <p>Focusing on electrical systems, practical technical design, and structured problem-solving.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h3>Endurance</h3>
+                        <p>Pushing physical and mental limits through long-distance running and athletic challenges.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h3>Writing</h3>
+                        <p>Capturing raw, honest perspectives on culture, travel, and personal growth.</p>
+                    </div>
+                </div>
+
+                <p>I believe in staying curious, maintaining a strong work ethic, and continually testing boundaries. Whether discussing technical innovation, sharing stories from overseas, or talking about endurance training, feel free to reach out and connect.</p>
+            </div>
+        </section>
+
         <section id="writing" class="section">
             <h2 class="section-title">Latest Writing</h2>
             <div class="card-grid">
                 <article class="card">
                     <div class="card-date">July 2026</div>
                     <a href="#" class="card-title">Observations from the Road</a>
-                    <p class="card-description">Notes on street food, local conversations, and finding clarity in unfamiliar cities.</p>
+                    <p class="card-description">Notes on local food, authentic conversations, and finding clarity in unfamiliar places.</p>
                 </article>
                 <article class="card">
                     <div class="card-date">June 2026</div>
                     <a href="#" class="card-title">Lessons in Endurance</a>
-                    <p class="card-description">What long distance training teaches you about consistency, pacing, and mental toughness.</p>
+                    <p class="card-description">What long-distance training teaches about discipline, pacing, and mental toughness.</p>
                 </article>
             </div>
         </section>
@@ -166,8 +234,8 @@
             <h2 class="section-title">Selected Work</h2>
             <div class="card-grid">
                 <article class="card">
-                    <a href="#" class="card-title">Engineering Showcase</a>
-                    <p class="card-description">A collection of hardware and technical design projects highlighting problem-solving strategies.</p>
+                    <a href="#" class="card-title">Technical Portfolio</a>
+                    <p class="card-description">A display of engineering design projects, hardware testing, and analytical problem-solving.</p>
                 </article>
             </div>
         </section>
