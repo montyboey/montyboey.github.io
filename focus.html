@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus System | Monty Boey</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f7fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e0;
+            --text-main: #1a202c;
+            --text-body: #4a5568;
+            --text-muted: #718096;
+            --accent: #2b6cb0;
+            --accent-hover: #2c5282;
+            --danger: #e53e3e;
+            --danger-hover: #c53030;
+            --success: #38a169;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-body);
+            background-color: var(--bg);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header.site-header {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 0 20px 0;
+        }
+
+        nav.site-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: var(--text-body);
+            font-weight: 500;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hero {
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+        }
+
+        /* App Sub-Navigation Tabs */
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            background: #edf2f7;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            max-width: 900px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--surface);
+            color: var(--accent);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Stat Counter Bar */
+        .stat-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Grid & Cards */
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        /* Form Controls */
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-hover);
+            color: var(--text-main);
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            margin-bottom: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-hover);
+            color: var(--text-body);
+        }
+
+        .btn-outline:hover {
+            background: #edf2f7;
+            color: var(--text-main);
+        }
+
+        /* Schedule & Block Items */
+        .block-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .block-item {
+            background: #f7fafc;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .block-time {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .block-time span {
+            color: var(--accent);
+        }
+
+        .block-title {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Fullscreen Focus Overlay */
+        #focus-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.98);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        #focus-screen.active {
+            display: flex;
+        }
+
+        .focus-current-task {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #90cdf4;
+            margin-bottom: 8px;
+            max-width: 600px;
+        }
+
+        .timer-display {
+            font-size: 6.5rem;
+            font-weight: 800;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            color: #ffffff;
+            letter-spacing: -2px;
+            margin: 1.5rem 0;
+        }
+
+        .sound-controls {
+            margin: 1rem 0 2rem 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #cbd5e0;
+        }
+
+        .sound-controls select {
+            background: #2d3748;
+            color: #ffffff;
+            border: 1px solid #4a5568;
+            margin-bottom: 0;
+            width: auto;
+        }
+
+        footer {
+            max-width: 900px;
+            margin: 60px auto 20px auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/" class="logo">Monty Boey</a>
+            <div class="nav-links">
+                <a href="/about.html">About</a>
+                <a href="/articles.html">Articles</a>
+                <a href="/focus.html" class="active">Focus</a>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <h1>Intentional Focus OS</h1>
+            <p>A quiet system for daily time-blocking, goal alignment, and deep work intervals.</p>
+        </div>
+    </header>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchView('planner', this)">Planner</button>
+        <button class="tab-btn" onclick="switchView('goals', this)">Seasons & Goals</button>
+        <button class="tab-btn" onclick="switchView('journal', this)">Evening Review</button>
+    </div>
+
+    <main>
+        <!-- VIEW 1: PLANNER -->
+        <section id="planner" class="view active">
+            <div class="stat-bar">
+                <div class="stat-box">
+                    <div class="stat-number" id="stats-total-time">0h 0m</div>
+                    <div class="stat-label">Focus Completed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="stats-remaining-time">0h 0m</div>
+                    <div class="stat-label">Planned Remaining</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h2>Add Timeblock</h2>
+                    <label for="task-title">Task Objective</label>
+                    <input type="text" id="task-title" placeholder="e.g. Write essay draft on endurance" />
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label for="task-start">Start Time</label>
+                            <input type="time" id="task-start" />
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="task-duration">Duration (mins)</label>
+                            <input type="number" id="task-duration" min="5" step="5" value="45" />
+                        </div>
+                    </div>
+
+                    <label for="task-goal-select">Assign Priority / Goal</label>
+                    <select id="task-goal-select">
+                        <option value="General">-- General Execution --</option>
+                    </select>
+
+                    <button class="btn" style="width: 100%; margin-top: 4px;" onclick="addTimeBlock()">Schedule Block</button>
+                </div>
+
+                <div class="card">
+                    <h2>Today's Schedule</h2>
+                    <div id="block-list-container" class="block-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: GOALS & SEASONS -->
+        <section id="goals" class="view">
+            <div class="grid">
+                <div class="card">
+                    <h2>New Season Priority</h2>
+                    <label for="goal-name">Priority Title</label>
+                    <input type="text" id="goal-name" placeholder="e.g. Sub-3 Marathon Training" />
+                    
+                    <label for="goal-desc">Core Objective & Why It Matters</label>
+                    <textarea id="goal-desc" rows="3" placeholder="What does finishing this unlock?"></textarea>
+                    
+                    <button class="btn" onclick="addGoal()">Save Priority</button>
+                </div>
+                <div class="card">
+                    <h2>Active Priorities</h2>
+                    <div id="goal-container" style="display:flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: JOURNAL / EVENING REVIEW -->
+        <section id="journal" class="view">
+            <div class="card">
+                <h2>Evening Alignment Review</h2>
+                <label for="reflect-wins">What moved forward smoothly today?</label>
+                <textarea id="reflect-wins" rows="3" placeholder="Deep work block yielded high clarity..."></textarea>
+
+                <label for="reflect-blockers">Where did friction or distraction emerge?</label>
+                <textarea id="reflect-blockers" rows="3" placeholder="Unscheduled checks derailed mid-afternoon flow..."></textarea>
+
+                <label for="reflect-score">Plan Alignment Rating (1–10)</label>
+                <input type="number" id="reflect-score" min="1" max="10" value="8" style="max-width: 140px;" />
+
+                <button class="btn" onclick="saveReflection()">Log Review</button>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h2>Reflection History</h2>
+                <div id="journal-history" style="display:flex; flex-direction: column; gap: 12px;"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FULLSCREEN FOCUS SCREEN -->
+    <div id="focus-screen">
+        <div class="focus-current-task" id="focus-task-title">Current Task</div>
+        <div class="timer-display" id="timer-display">00:00</div>
+
+        <div class="sound-controls">
+            <label for="soundscape">Focus Audio:</label>
+            <select id="soundscape" onchange="updateAudioChoice()">
+                <option value="none">Mute (Silence)</option>
+                <option value="brown">Brown Noise</option>
+                <option value="binaural">40Hz Gamma Focus Tone</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+            <button class="btn btn-outline" id="pause-btn" style="color:#ffffff; border-color:#4a5568;" onclick="togglePauseFocus()">Pause</button>
+            <button class="btn btn-danger" onclick="stopFocusSession()">End Session</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Monty Boey. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- STATE MANAGEMENT ---
+        let state = {
+            blocks: JSON.parse(localStorage.getItem('focus_blocks')) || [],
+            goals: JSON.parse(localStorage.getItem('focus_goals')) || ['Ship Portfolio', 'Running Consistency'],
+            journal: JSON.parse(localStorage.getItem('focus_journal')) || [],
+            focusMinutesTotal: parseInt(localStorage.getItem('focus_min_total') || '0', 10)
+        };
+
+        function saveState() {
+            localStorage.setItem('focus_blocks', JSON.stringify(state.blocks));
+            localStorage.setItem('focus_goals', JSON.stringify(state.goals));
+            localStorage.setItem('focus_journal', JSON.stringify(state.journal));
+            localStorage.setItem('focus_min_total', state.focusMinutesTotal.toString());
+        }
+
+        // --- SUB-VIEW TABS ---
+        function switchView(viewId, triggerBtn) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            triggerBtn.classList.add('active');
+        }
+
+        // --- GOALS LOGIC ---
+        function renderGoals() {
+            const select = document.getElementById('task-goal-select');
+            const container = document.getElementById('goal-container');
+            select.innerHTML = '<option value="General">-- General Execution --</option>';
+            container.innerHTML = '';
+
+            state.goals.forEach((goal, i) => {
+                const opt = document.createElement('option');
+                opt.value = goal;
+                opt.textContent = goal;
+                select.appendChild(opt);
+
+                const card = document.createElement('div');
+                card.style.cssText = "background:#f7fafc; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; display: flex; justify-content: space-between; align-items: center;";
+                card.innerHTML = `<strong style="color: var(--text-main);">${goal}</strong><button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.75rem;" onclick="removeGoal(${i})">Remove</button>`;
+                container.appendChild(card);
+            });
+        }
+
+        function addGoal() {
+            const name = document.getElementById('goal-name').value.trim();
+            if (!name) return;
+            state.goals.push(name);
+            document.getElementById('goal-name').value = '';
+            document.getElementById('goal-desc').value = '';
+            saveState();
+            renderGoals();
+        }
+
+        function removeGoal(index) {
+            state.goals.splice(index, 1);
+            saveState();
+            renderGoals();
+        }
+
+        // --- TIMEBLOCKING LOGIC ---
+        function addTimeBlock() {
+            const title = document.getElementById('task-title').value.trim();
+            const start = document.getElementById('task-start').value;
+            const duration = parseInt(document.getElementById('task-duration').value, 10);
+            const goal = document.getElementById('task-goal-select').value;
+
+            if (!title || !start || isNaN(duration)) {
+                alert('Please enter a title, start time, and duration.');
+                return;
+            }
+
+            state.blocks.push({ id: Date.now(), title, start, duration, goal, completed: false });
+            state.blocks.sort((a, b) => a.start.localeCompare(b.start));
+            document.getElementById('task-title').value = '';
+            saveState();
+            renderBlocks();
+        }
+
+        function deleteBlock(id) {
+            state.blocks = state.blocks.filter(b => b.id !== id);
+            saveState();
+            renderBlocks();
+        }
+
+        function renderBlocks() {
+            const container = document.getElementById('block-list-container');
+            container.innerHTML = '';
+            let remainingMin = 0;
+
+            if (state.blocks.length === 0) {
+                container.innerHTML = '<p style="font-size: 0.9rem; color: var(--text-muted); font-style: italic;">No blocks scheduled yet.</p>';
+            }
+
+            state.blocks.forEach(block => {
+                if (!block.completed) remainingMin += block.duration;
+                const item = document.createElement('div');
+                item.className = 'block-item';
+                item.innerHTML = `
+                    <div>
+                        <div class="block-time">${block.start} &bull; ${block.duration}m &bull; <span>${block.goal}</span></div>
+                        <div class="block-title" style="${block.completed ? 'text-decoration: line-through; opacity: 0.45;' : ''}">${block.title}</div>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        ${!block.completed ? `<button class="btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="startFocusSession('${block.title.replace(/'/g, "\\'")}', ${block.duration},${block.id})">Focus</button>` : ''}
+                        <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;" onclick="deleteBlock(${block.id})" title="Delete">&times;</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+
+            document.getElementById('stats-remaining-time').textContent = `${Math.floor(remainingMin / 60)}h ${remainingMin % 60}m`;
+            document.getElementById('stats-total-time').textContent = `${Math.floor(state.focusMinutesTotal / 60)}h ${state.focusMinutesTotal % 60}m`;
+        }
+
+        // --- REFLECTION LOGIC ---
+        function saveReflection() {
+            const wins = document.getElementById('reflect-wins').value.trim();
+            const blockers = document.getElementById('reflect-blockers').value.trim();
+            const score = document.getElementById('reflect-score').value;
+
+            if (!wins && !blockers) return;
+
+            const record = {
+                date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }),
+                wins,
+                blockers,
+                score
+            };
+
+            state.journal.unshift(record);
+            saveState();
+            renderJournal();
+
+            document.getElementById('reflect-wins').value = '';
+            document.getElementById('reflect-blockers').value = '';
+        }
+
+        function renderJournal() {
+            const container = document.getElementById('journal-history');
+            container.innerHTML = '';
+            if (state.journal.length === 0) {
+                container.innerHTML = '<p style="font-size: 0.9rem; color: var(--text-muted); font-style: italic;">No reflection entries logged yet.</p>';
+                return;
+            }
+            state.journal.forEach(entry => {
+                const item = document.createElement('div');
+                item.style.cssText = "background: #f7fafc; border: 1px solid var(--border); padding: 14px; border-radius: 6px;";
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px; font-size: 0.95rem; color: var(--text-main);">
+                        <span>${entry.date}</span>
+                        <span style="color: var(--accent);">Score: ${entry.score}/10</span>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 4px;"><strong style="color: var(--text-main);">Wins:</strong> ${entry.wins || 'N/A'}</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);"><strong style="color: var(--text-main);">Friction:</strong> ${entry.blockers || 'N/A'}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // --- WEB AUDIO API ENGINE ---
+        let audioCtx = null;
+        let currentSoundNode = null;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function stopAmbientNoise() {
+            if (currentSoundNode) {
+                try { currentSoundNode.stop(); } catch(e) {}
+                currentSoundNode = null;
+            }
+        }
+
+        function playBrownNoise() {
+            stopAmbientNoise();
+            initAudio();
+            const bufferSize = audioCtx.sampleRate * 2;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            let lastOut = 0.0;
+
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                output[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = output[i];
+                output[i] *= 3.5;
+            }
+
+            const whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0.15;
+            whiteNoise.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            whiteNoise.start();
+            currentSoundNode = whiteNoise;
+        }
+
+        function playBinauralBeats() {
+            stopAmbientNoise();
+            initAudio();
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const merger = audioCtx.createChannelMerger(2);
+            const gain = audioCtx.createGain();
+
+            gain.gain.value = 0.05;
+            osc1.frequency.value = 200;
+            osc2.frequency.value = 240; // 40Hz difference (Gamma)
+
+            osc1.connect(merger, 0, 0);
+            osc2.connect(merger, 0, 1);
+            merger.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc1.start();
+            osc2.start();
+
+            currentSoundNode = {
+                stop: () => {
+                    osc1.stop();
+                    osc2.stop();
+                }
+            };
+        }
+
+        function updateAudioChoice() {
+            const choice = document.getElementById('soundscape').value;
+            if (choice === 'brown') playBrownNoise();
+            else if (choice === 'binaural') playBinauralBeats();
+            else stopAmbientNoise();
+        }
+
+        // --- TIMER ENGINE ---
+        let timerInterval = null;
+        let secondsLeft = 0;
+        let activeBlockId = null;
+        let isPaused = false;
+        let initialDurationMinutes = 0;
+
+        function startFocusSession(taskTitle, durationMinutes, blockId) {
+            activeBlockId = blockId;
+            initialDurationMinutes = durationMinutes;
+            secondsLeft = durationMinutes * 60;
+            isPaused = false;
+
+            document.getElementById('focus-task-title').textContent = taskTitle;
+            document.getElementById('pause-btn').textContent = 'Pause';
+            document.getElementById('focus-screen').classList.add('active');
+
+            updateTimerDisplay();
+            updateAudioChoice();
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!isPaused) {
+                    secondsLeft--;
+                    updateTimerDisplay();
+                    if (secondsLeft <= 0) {
+                        completeFocusSession();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const min = Math.floor(secondsLeft / 60);
+            const sec = secondsLeft % 60;
+            document.getElementById('timer-display').textContent =
+                `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        }
+
+        function togglePauseFocus() {
+            isPaused = !isPaused;
+            document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause';
+        }
+
+        function stopFocusSession() {
+            clearInterval(timerInterval);
+            stopAmbientNoise();
+            document.getElementById('focus-screen').classList.remove('active');
+        }
+
+        function completeFocusSession() {
+            stopFocusSession();
+            alert('Focus session complete! Great work.');
+            state.focusMinutesTotal += initialDurationMinutes;
+
+            if (activeBlockId) {
+                const found = state.blocks.find(b => b.id === activeBlockId);
+                if (found) found.completed = true;
+            }
+
+            saveState();
+            renderBlocks();
+        }
+
+        // --- INITIAL RENDER ---
+        renderGoals();
+        renderBlocks();
+        renderJournal();
+    </script>
+</body>
+</html>
