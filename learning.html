@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Systems Master Guide | Monty Boey</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+            padding: 20px;
+        }
+
+        header {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 0 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a202c;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #2b6cb0;
+        }
+
+        .hero {
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            max-width: 750px;
+        }
+
+        .module-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .module-nav a {
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #2d3748;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .module-nav a:hover {
+            border-color: #2b6cb0;
+            color: #2b6cb0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .module {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .module h2 {
+            font-size: 1.6rem;
+            color: #1a202c;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .module h3 {
+            font-size: 1.25rem;
+            color: #2b6cb0;
+            margin: 24px 0 12px 0;
+        }
+
+        p, ul, ol {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7fafc;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        code, pre {
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #805ad5;
+        }
+
+        pre {
+            background: #1a202c;
+            color: #edf2f7;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+
+        .interactive-box {
+            background: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-left: 4px solid #2b6cb0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .interactive-box h4 {
+            font-size: 1.1rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            background: #2b6cb0;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #2c5282;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+            margin-left: 8px;
+        }
+
+        .btn-outline:hover {
+            background: #edf2f7;
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: #ffffff;
+        }
+
+        /* Bitboard */
+        .bitboard {
+            display: flex;
+            gap: 4px;
+            margin: 16px 0;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .bit-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            padding: 6px 8px;
+            cursor: pointer;
+            user-select: none;
+            min-width: 38px;
+        }
+
+        .bit-cell:hover {
+            border-color: #2b6cb0;
+        }
+
+        .bit-cell.active {
+            background: #ebf8ff;
+            border-color: #3182ce;
+        }
+
+        .bit-num {
+            font-size: 0.7rem;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+
+        .bit-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .bit-cell.active .bit-val {
+            color: #2b6cb0;
+        }
+
+        /* Call stack visualiser */
+        .stack-diagram {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 4px;
+            width: 100%;
+            max-width: 380px;
+            margin: 16px auto;
+            background: #ffffff;
+            border: 2px solid #4a5568;
+            border-radius: 6px;
+            padding: 8px;
+        }
+
+        .stack-slot {
+            padding: 10px 14px;
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .stack-slot.active {
+            background: #bee3f8;
+            border-color: #3182ce;
+            font-weight: bold;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-green { background: #c6f6d5; color: #22543d; }
+        .badge-red { background: #fed7d7; color: #742a2a; }
+        .badge-blue { background: #bee3f8; color: #2b6cb0; }
+
+        .result-box {
+            background: #edf2f7;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            max-width: 900px;
+            margin: 60px auto 20px auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="logo">Monty Boey</a>
+            <div class="nav-links">
+                <a href="/about.html">About</a>
+                <a href="/articles.html">Articles</a>
+                <a href="/learning.html" class="active">Learning</a>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <h1>Embedded Systems & Hardware Architecture</h1>
+            <p>An interactive, hands-on master guide to digital hardware, processor design, real-time task scheduling, memory manipulation, and concurrency.</p>
+        </div>
+
+        <div class="module-nav">
+            <a href="#module-fpga">1. FPGAs & Digital Logic</a>
+            <a href="#module-arch">2. CPU Architectures & The Stack</a>
+            <a href="#module-mmio">3. Memory-Mapped I/O & C Registers</a>
+            <a href="#module-parallel">4. Parallel Computing & Scheduling</a>
+            <a href="#module-os">5. OS Kernels & Concurrency</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- MODULE 1 -->
+        <section id="module-fpga" class="module">
+            <h2>Module 1: FPGAs, Digital Logic & VHDL</h2>
+            <p>Digital computing begins with hardware design. Microcontrollers run sequences of fixed instructions on pre-etched silicon. In contrast, <strong>Field Programmable Gate Arrays (FPGAs)</strong> are reconfigurable arrays of logic blocks, lookup tables, and flip-flops wired together on demand.</p>
+
+            <h3>Hardware Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Device Type</th>
+                        <th>Architecture</th>
+                        <th>Execution Nature</th>
+                        <th>Best Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Microcontroller (MCU)</strong></td>
+                        <td>Pre-configured processor, fixed digital logic, unified bus.</td>
+                        <td>Sequential instruction execution (cycles).</td>
+                        <td>Low power control tasks, sensing, small devices.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FPGA</strong></td>
+                        <td>Configurable Logic Blocks (CLBs), Look-Up Tables (LUTs), Flip-Flops.</td>
+                        <td>True hardware concurrency (parallel gates).</td>
+                        <td>High-speed signal processing, custom hardware protocols.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System on Chip (SoC)</strong></td>
+                        <td>Processing Subsystem (PS with ARM cores) + Programmable Logic (PL).</td>
+                        <td>Hybrid: high-level OS alongside custom hardware pipelines.</td>
+                        <td>Advanced robotics, vision pipelines, software-defined radio.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>VHDL Synthesizability Rules</h3>
+            <p>Hardware Description Languages (HDLs) do not execute sequentially like C or Python. Statements outside of a process run <strong>concurrently</strong> in physical silicon. Some statements are purely for testbenches and simulations, while others synthesize into real gates:</p>
+            <ul>
+                <li><code>a &lt;= b and c;</code>: <strong>Synthesizable.</strong> Forms a physical combinational AND gate.</li>
+                <li><code>wait for 4 ns;</code>: <strong>Not Synthesizable.</strong> Physical silicon has no inherent concept of arbitrary nanosecond pauses. Delays belong only in simulation testbenches.</li>
+                <li><code>c &lt;= not c after 1 ns;</code>: <strong>Not Synthesizable.</strong> The <code>after 1 ns</code> construct cannot be synthesized into static logic.</li>
+                <li><code>signal g : signed(5 downto 0) := to_signed(-12, 6);</code>: <strong>Synthesizable.</strong> Initializes 6 physical registers with the two's complement value of -12 (<code>110100</code>) during FPGA bitstream configuration.</li>
+                <li><code>TH : entity work.module port map (...);</code>: <strong>Synthesizable.</strong> Instantiates a modular hardware component and wires its inputs and outputs.</li>
+            </ul>
+
+            <h3>Finite State Machines: Moore vs Mealy</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Moore FSM</th>
+                        <th>Mealy FSM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Output Depends On</strong></td>
+                        <td>Current state only.</td>
+                        <td>Current state AND current external inputs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>State Count</strong></td>
+                        <td>Often requires more states to represent distinct outputs.</td>
+                        <td>Often requires fewer states.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Timing & Glitches</strong></td>
+                        <td>Synchronous and glitch-free (outputs change with clock state).</td>
+                        <td>Outputs react instantly to input changes, but can glitch.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="interactive-box">
+                <h4>Interactive VHDL Synthesizability Checker</h4>
+                <p>Select a VHDL code snippet to test your understanding of hardware synthesis:</p>
+                <div class="input-group">
+                    <select id="vhdl-select" onchange="checkVhdl()">
+                        <option value="">-- Choose a code statement --</option>
+                        <option value="1">wait for 10 ns;</option>
+                        <option value="2">y &lt;= a xor b;</option>
+                        <option value="3">clk &lt;= not clk after 5 ns;</option>
+                        <option value="4">signal count : unsigned(3 downto 0) := "0000";</option>
+                    </select>
+                </div>
+                <div id="vhdl-result" class="result-box" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section id="module-arch" class="module">
+            <h2>Module 2: Processor Architectures & The Stack</h2>
+            <p>Every central processing unit relies on structural units: the Control Unit (CU) to decode instructions, the Arithmetic Logic Unit (ALU) to execute math, and Registers for fast storage.</p>
+
+            <h3>Memory Architecture: Von Neumann vs Harvard</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Architecture</th>
+                        <th>Memory & Bus Structure</th>
+                        <th>Key Advantages</th>
+                        <th>Key Limitations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Von Neumann</strong></td>
+                        <td>Single shared memory and bus for both instructions (code) and data.</td>
+                        <td>Simple wiring, flexible memory allocation.</td>
+                        <td>Von Neumann bottleneck: cannot fetch code and data in the exact same cycle.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Harvard</strong></td>
+                        <td>Separate physical memories and separate buses for instructions and data.</td>
+                        <td>Simultaneous instruction fetch and data read/write. Faster throughput.</td>
+                        <td>More complex bus wiring and pin layout.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Instruction Sets: RISC vs CISC</h3>
+            <ul>
+                <li><strong>RISC (Reduced Instruction Set Computer):</strong> Small set of fundamental, fixed-length instructions. Strict load/store architecture (only LOAD and STORE access memory; computations occur solely in registers). Programs require more lines of assembly, but pipelining is straightforward.</li>
+                <li><strong>CISC (Complex Instruction Set Computer):</strong> Large instruction set featuring complex, variable-length instructions. Operations can directly read from and write to memory (e.g. <code>ADD [mem], reg</code>). Programs require fewer assembly instructions, but decoding hardware is more complex.</li>
+            </ul>
+
+            <h3>Function Calls & The Call Stack</h3>
+            <p>During a function call in C, the processor coordinates three essential registers:</p>
+            <ul>
+                <li><strong>Program Counter (PC):</strong> Holds the memory address of the next instruction to fetch and execute.</li>
+                <li><strong>Stack Pointer (SP):</strong> Points to the top of the stack in memory (stacks typically grow downwards towards lower memory addresses).</li>
+                <li><strong>Frame Pointer (FP):</strong> Points to the fixed base of the current function's stack frame, providing a stable reference for local variables.</li>
+            </ul>
+
+            <div class="interactive-box">
+                <h4>Interactive Call Stack Visualiser</h4>
+                <p>Step through a C function execution: <code>int mul(int a, int b) { int c = a * b; return c; }</code></p>
+                <div style="margin-bottom: 12px;">
+                    <button class="btn" onclick="stepStack(1)">Step Next</button>
+                    <button class="btn btn-outline" onclick="resetStack()">Reset</button>
+                    <span id="stack-step-label" style="margin-left: 14px; font-weight: 600; font-size: 0.9rem; color: #2b6cb0;">Current: main() before call</span>
+                </div>
+                <div class="stack-diagram" id="stack-container"></div>
+                <div id="stack-explanation" class="result-box">Click "Step Next" to trace the Program Counter, Stack Pointer, and Frame Pointer.</div>
+            </div>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section id="module-mmio" class="module">
+            <h2>Module 3: Memory-Mapped I/O & C Registers</h2>
+            <p>Embedded systems interact with timers, GPIO pins, and network controllers through <strong>Memory-Mapped Input/Output (MMIO)</strong>. Hardware registers appear as regular addresses in the CPU memory space.</p>
+
+            <h3>Address Calculation Formula</h3>
+            <p>Every peripheral has a Base Address assigned by the hardware bus interconnect, while individual registers are located at fixed Offsets:</p>
+            <pre>Absolute Address = Base Address + Register Offset</pre>
+            <p>For example, if a timer peripheral has a base address of <code>0x4400</code> and the Control/Status Register (TCSR1) has an offset of <code>0xC0</code>, its absolute address is <code>0x4400 + 0xC0 = 0x44C0</code>.</p>
+
+            <h3>Bitwise Manipulation Rules in C</h3>
+            <ul>
+                <li><strong>Set bits (make 1):</strong> Use bitwise OR: <code>*reg |= (1 &lt;&lt; bit);</code></li>
+                <li><strong>Clear bits (make 0):</strong> Use bitwise AND with inverted mask: <code>*reg &amp;= ~(1 &lt;&lt; bit);</code></li>
+                <li><strong>Toggle bits (switch 0 to 1, or 1 to 0):</strong> Use bitwise XOR: <code>*reg ^= (1 &lt;&lt; bit);</code></li>
+                <li><strong>Read bits:</strong> Mask with bitwise AND: <code>int state = (*reg &gt;&gt; bit) &amp; 1;</code></li>
+            </ul>
+
+            <div class="interactive-box">
+                <h4>Live 16-Bit Register Bitboard</h4>
+                <p>Click on any bit to toggle it, or use the quick operation buttons below to observe the generated C code and hexadecimal values.</p>
+
+                <div class="bitboard" id="bitboard"></div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:10px;">
+                    <div>
+                        <strong>Hex:</strong> <code id="reg-hex">0x0000</code> |
+                        <strong>Decimal:</strong> <code id="reg-dec">0</code>
+                    </div>
+                    <div>
+                        <button class="btn" onclick="applyBitOp('set', 4)">Set Bit 4</button>
+                        <button class="btn" onclick="applyBitOp('toggle', 8)">Toggle Bit 8</button>
+                        <button class="btn btn-outline" onclick="applyBitOp('clear', 4)">Clear Bit 4</button>
+                        <button class="btn btn-outline" onclick="resetRegister()">Clear All</button>
+                    </div>
+                </div>
+
+                <div id="c-code-preview" class="result-box" style="margin-top:14px;">
+                    <code>volatile uint16_t *reg = (volatile uint16_t *)0x44C0;</code><br>
+                    <span id="c-op-line" style="color: #2b6cb0; font-weight:600;">// Click a button to generate register C code</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section id="module-parallel" class="module">
+            <h2>Module 4: Parallel Computing & Task Scheduling</h2>
+            <p>Real-time digital signal processing and embedded algorithms require careful execution scheduling across single or multiple processor cores.</p>
+
+            <h3>Flynn's Taxonomy</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Definition</th>
+                        <th>Real-World Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SISD</strong></td>
+                        <td>Single Instruction, Single Data.</td>
+                        <td>Simple 8-bit microcontroller running sequential code (e.g. gate remote receiver).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIMD</strong></td>
+                        <td>Single Instruction, Multiple Data.</td>
+                        <td>Graphics processing units (GPUs), vector extensions modifying pixel brightness across an image.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MISD</strong></td>
+                        <td>Multiple Instruction, Single Data.</td>
+                        <td>Fault-tolerant redundant voting systems (e.g. triple modular redundancy in flight control computers).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MIMD</strong></td>
+                        <td>Multiple Instruction, Multiple Data.</td>
+                        <td>Multi-core processors handling independent user web requests (e.g. streaming servers).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Precedence Graphs, Critical Paths & Utilisation</h3>
+            <p>To schedule an algorithm, break it down into <strong>primitive tasks</strong> (atomic multiplications and additions), map the data flow into a Directed Acyclic Graph (DAG), and identify the <strong>critical path</strong> (the longest sequence of dependent tasks):</p>
+            <ul>
+                <li><strong>Execution Time (T_exec):</strong> Total time required to complete the scheduled tasks.</li>
+                <li><strong>Maximum Sample Rate (f_max):</strong> <code>f_max = 1 / T_exec</code> (assuming non-pipelined execution).</li>
+                <li><strong>Resource Utilisation:</strong>
+                    <pre>Utilisation (%) = (Total Task Work / (Number of Cores * T_exec)) * 100</pre>
+                </li>
+            </ul>
+
+            <div class="interactive-box">
+                <h4>Interactive Multi-Core Scheduling Calculator</h4>
+                <p>Calculate execution metrics for an algorithm with <strong>9 primitive tasks</strong> (each taking 1 &mu;s) with a critical path of 4 &mu;s:</p>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+                    <div class="input-group">
+                        <label>Number of CPU Cores:</label>
+                        <select id="calc-cores" onchange="runScheduleCalc()">
+                            <option value="1">1 Core</option>
+                            <option value="2">2 Cores</option>
+                            <option value="3" selected>3 Cores</option>
+                            <option value="4">4 Cores</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Task Time Slot (&mu;s):</label>
+                        <input type="number" id="calc-slot" value="1" min="1" step="0.5" onchange="runScheduleCalc()">
+                    </div>
+                </div>
+
+                <div id="schedule-results" class="result-box">
+                    <div><strong>Total Active Work:</strong> 9 &mu;s</div>
+                    <div><strong>Scheduled Execution Time:</strong> <span id="res-texec">4 &mu;s</span></div>
+                    <div><strong>Maximum Sample Rate:</strong> <span id="res-fmax">250 kHz</span></div>
+                    <div><strong>Resource Utilisation:</strong> <span id="res-util" style="color: #2b6cb0; font-weight: bold;">75%</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section id="module-os" class="module">
+            <h2>Module 5: Operating Systems, Concurrency & Hardware Security</h2>
+            <p>Embedded systems progress from bare-metal super-loops to Real-Time Operating Systems (RTOS) or full embedded Linux platforms to manage complex multi-tasking workloads.</p>
+
+            <h3>Why Use an Operating System?</h3>
+            <ul>
+                <li><strong>Hardware Abstraction:</strong> Standardised Device Drivers hide register-level complexities from application software.</li>
+                <li><strong>Preemptive Multitasking:</strong> A scheduling kernel interrupts low-priority tasks to run time-critical tasks via hardware timer interrupts.</li>
+                <li><strong>Memory Protection:</strong> The Memory Management Unit (MMU) isolates process memory to prevent crashes from affecting the entire system.</li>
+            </ul>
+
+            <h3>System Boot Process</h3>
+            <ol>
+                <li><strong>Stage 0 (Power-on Reset):</strong> CPU executes initial boot ROM code burned onto the silicon.</li>
+                <li><strong>Stage 1 Bootloader:</strong> Loads minimal configuration, sets up RAM clocks.</li>
+                <li><strong>Stage 2 Bootloader (e.g. U-Boot, UEFI):</strong> Loads the operating system kernel image into system memory.</li>
+                <li><strong>Kernel Initialization:</strong> Configures drivers, page tables, interrupts, and memory spaces.</li>
+                <li><strong>User Space:</strong> Spawns user applications and background daemons.</li>
+            </ol>
+
+            <h3>Concurrency: Mutexes, Race Conditions & Deadlocks</h3>
+            <p>When multiple threads share variables, a <strong>race condition</strong> occurs if both threads write to memory at the same time. To secure a <strong>critical section</strong>, developers employ mutual exclusion (<strong>mutexes</strong>):</p>
+            <pre>pthread_mutex_lock(&amp;lock);
+// Critical section: read and write shared data safely
+shared_counter++;
+pthread_mutex_unlock(&amp;lock);</pre>
+            <p>A <strong>deadlock</strong> occurs when two threads wait indefinitely for locks held by each other. Preventing circular waits and locking resources in consistent order eliminates deadlocks.</p>
+
+            <h3>Pseudo-Random Number Generators (LFSRs)</h3>
+            <p>A <strong>Linear Feedback Shift Register (LFSR)</strong> shifts bits through flip-flops while feeding back an XOR/XNOR combination of specific taps. LFSRs are deterministic: given the same initial seed, they always reproduce the identical pseudo-random sequence.</p>
+
+            <div class="interactive-box">
+                <h4>Interactive 4-Bit LFSR Simulator</h4>
+                <p>Initial state: <code>1001</code>. Tap polynomial: Bit 3 XOR Bit 0.</p>
+                <div style="margin-bottom: 12px;">
+                    <button class="btn" onclick="stepLfsr()">Clock Next Cycle</button>
+                    <button class="btn btn-outline" onclick="resetLfsr()">Reset Seed</button>
+                </div>
+                <div class="result-box">
+                    <strong>Current Register State:</strong> <code id="lfsr-state" style="font-size:1.2rem; font-weight:bold;">1 0 0 1</code><br>
+                    <strong>Feedback Bit (Bit 3 XOR Bit 0):</strong> <span id="lfsr-fb">1 XOR 1 = 0</span><br>
+                    <strong>Sequence History:</strong> <span id="lfsr-history">1001</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Monty Boey. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Module 1: VHDL Checker
+        function checkVhdl() {
+            const val = document.getElementById('vhdl-select').value;
+            const res = document.getElementById('vhdl-result');
+            if (!val) {
+                res.style.display = 'none';
+                return;
+            }
+            res.style.display = 'block';
+            if (val === '1') {
+                res.innerHTML = '<span class="badge badge-red">Not Synthesizable</span><br>Physical logic gates cannot pause execution for real-world time units without hardware counter circuits. Used only in simulation testbenches.';
+            } else if (val === '2') {
+                res.innerHTML = '<span class="badge badge-green">Synthesizable</span><br>Synthesizes directly into a combinational XOR gate on the FPGA.';
+            } else if (val === '3') {
+                res.innerHTML = '<span class="badge badge-red">Not Synthesizable</span><br>The "after" keyword is a simulation construct. To toggle a clock in hardware, use an external oscillator pin or PLL.';
+            } else if (val === '4') {
+                res.innerHTML = '<span class="badge badge-green">Synthesizable</span><br>Initialises 4 flip-flop registers to zeros during initial device configuration.';
+            }
+        }
+
+        // Module 2: Call Stack Visualiser
+        let stackStep = 0;
+        const stackFrames = [
+            {
+                label: '1. In main(): Local variables initialised',
+                slots: [
+                    { name: '1000: myval1', val: '8', active: false },
+                    { name: '1004: myval2', val: '2', active: false },
+                    { name: '1008: myres', val: 'uninitialised', active: false }
+                ],
+                expl: 'main() allocates space on the stack for myval1, myval2, and myres.'
+            },
+            {
+                label: '2. Calling mul(8, 2): Push arguments & return address',
+                slots: [
+                    { name: '1000: myval1', val: '8', active: false },
+                    { name: '1004: myval2', val: '2', active: false },
+                    { name: '1008: myres', val: 'uninitialised', active: false },
+                    { name: '1012: arg a', val: '8', active: true },
+                    { name: '1016: arg b', val: '2', active: true },
+                    { name: '1020: Return PC', val: 'Line 10 (main)', active: true }
+                ],
+                expl: 'Arguments 8 and 2 are pushed onto the stack. The CPU saves the Return Address (PC pointing to line 10) so it knows where to return when mul finishes.'
+            },
+            {
+                label: '3. Inside mul(): Frame Pointer set & local variable allocated',
+                slots: [
+                    { name: '1000: myval1', val: '8', active: false },
+                    { name: '1004: myval2', val: '2', active: false },
+                    { name: '1008: myres', val: 'uninitialised', active: false },
+                    { name: '1012: arg a', val: '8', active: false },
+                    { name: '1016: arg b', val: '2', active: false },
+                    { name: '1020: Return PC', val: 'Line 10 (main)', active: false },
+                    { name: '1024: Saved old FP', val: 'Addr 1000', active: true },
+                    { name: '1028: local c', val: '16 (8 * 2)', active: true }
+                ],
+                expl: 'Function prologue runs: old Frame Pointer is saved, and space is allocated for local variable c (8 * 2 = 16).'
+            },
+            {
+                label: '4. Return from mul(): Stack unwound & result assigned',
+                slots: [
+                    { name: '1000: myval1', val: '8', active: false },
+                    { name: '1004: myval2', val: '2', active: false },
+                    { name: '1008: myres', val: '16', active: true }
+                ],
+                expl: 'Function epilogue restores old FP, pops the return address into the Program Counter, and places 16 into myres in main().'
+            }
+        ];
+
+        function renderStack() {
+            const data = stackFrames[stackStep];
+            document.getElementById('stack-step-label').textContent = data.label;
+            document.getElementById('stack-explanation').innerHTML = '<strong>Mechanism:</strong> ' + data.expl;
+            const container = document.getElementById('stack-container');
+            container.innerHTML = '';
+            data.slots.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'stack-slot' + (s.active ? ' active' : '');
+                div.innerHTML = '<span>' + s.name + '</span><span>' + s.val + '</span>';
+                container.appendChild(div);
+            });
+        }
+
+        function stepStack(dir) {
+            stackStep = (stackStep + dir) % stackFrames.length;
+            renderStack();
+        }
+
+        function resetStack() {
+            stackStep = 0;
+            renderStack();
+        }
+
+        // Module 3: Bitboard
+        let registerVal = 0;
+
+        function buildBitboard() {
+            const board = document.getElementById('bitboard');
+            board.innerHTML = '';
+            for (let i = 15; i >= 0; i--) {
+                const bitVal = (registerVal >> i) & 1;
+                const cell = document.createElement('div');
+                cell.className = 'bit-cell' + (bitVal ? ' active' : '');
+                cell.onclick = () => toggleBit(i);
+                cell.innerHTML = '<span class="bit-num">' + i + '</span><span class="bit-val">' + bitVal + '</span>';
+                board.appendChild(cell);
+            }
+            document.getElementById('reg-hex').textContent = '0x' + registerVal.toString(16).toUpperCase().padStart(4, '0');
+            document.getElementById('reg-dec').textContent = registerVal.toString(10);
+        }
+
+        function toggleBit(i) {
+            registerVal ^= (1 << i);
+            buildBitboard();
+            document.getElementById('c-op-line').textContent = '*reg ^= (1 << ' + i + '); // Toggled bit ' + i;
+        }
+
+        function applyBitOp(op, bit) {
+            if (op === 'set') {
+                registerVal |= (1 << bit);
+                document.getElementById('c-op-line').textContent = '*reg |= (1 << ' + bit + '); // Set bit ' + bit + ' to 1';
+            } else if (op === 'clear') {
+                registerVal &= ~(1 << bit);
+                document.getElementById('c-op-line').textContent = '*reg &= ~(1 << ' + bit + '); // Cleared bit ' + bit + ' to 0';
+            } else if (op === 'toggle') {
+                registerVal ^= (1 << bit);
+                document.getElementById('c-op-line').textContent = '*reg ^= (1 << ' + bit + '); // Toggled bit ' + bit;
+            }
+            buildBitboard();
+        }
+
+        function resetRegister() {
+            registerVal = 0;
+            buildBitboard();
+            document.getElementById('c-op-line').textContent = '*reg = 0x0000; // Reset all bits';
+        }
+
+        // Module 4: Scheduling Calculator
+        function runScheduleCalc() {
+            const cores = parseInt(document.getElementById('calc-cores').value, 10);
+            const slot = parseFloat(document.getElementById('calc-slot').value) || 1;
+            const criticalPathSlots = 4;
+            const totalTasks = 9;
+
+            let execSlots = criticalPathSlots;
+            if (cores === 1) {
+                execSlots = totalTasks; // 9 slots
+            } else if (cores === 2) {
+                execSlots = 5; // cannot finish 9 tasks on 2 cores in 4 slots (max 8)
+            } else {
+                execSlots = 4; // 3 or 4 cores meet critical path of 4
+            }
+
+            const tExec = execSlots * slot;
+            const fMax = (1 / (tExec * 1e-6)) / 1000; // kHz
+            const totalSlotsAvailable = cores * execSlots;
+            const util = Math.round((totalTasks / totalSlotsAvailable) * 100);
+
+            document.getElementById('res-texec').textContent = tExec + ' μs (' + execSlots + ' slots)';
+            document.getElementById('res-fmax').textContent = Math.round(fMax) + ' kHz';
+            document.getElementById('res-util').textContent = util + '%';
+        }
+
+        // Module 5: LFSR Simulator
+        let lfsrBits = [1, 0, 0, 1]; // seed
+        let lfsrHist = ['1001'];
+
+        function stepLfsr() {
+            const b3 = lfsrBits[0];
+            const b0 = lfsrBits[3];
+            const feedback = b3 ^ b0;
+            lfsrBits = [feedback, lfsrBits[0], lfsrBits[1], lfsrBits[2]];
+            const stateStr = lfsrBits.join('');
+            lfsrHist.push(stateStr);
+            if (lfsrHist.length > 8) lfsrHist.shift();
+
+            document.getElementById('lfsr-state').textContent = lfsrBits.join(' ');
+            document.getElementById('lfsr-fb').textContent = b3 + ' XOR ' + b0 + ' = ' + feedback;
+            document.getElementById('lfsr-history').textContent = lfsrHist.join(' → ');
+        }
+
+        function resetLfsr() {
+            lfsrBits = [1, 0, 0, 1];
+            lfsrHist = ['1001'];
+            document.getElementById('lfsr-state').textContent = '1 0 0 1';
+            document.getElementById('lfsr-fb').textContent = '1 XOR 1 = 0';
+            document.getElementById('lfsr-history').textContent = '1001';
+        }
+
+        // Initialise interactive components on load
+        renderStack();
+        buildBitboard();
+        runScheduleCalc();
+    </script>
+</body>
+</html>
