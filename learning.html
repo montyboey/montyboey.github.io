@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Hub | Monty Boey</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+            padding: 20px;
+        }
+
+        header {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 0 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a202c;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #2b6cb0;
+        }
+
+        /* Dropdown Navigation Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .dropdown > a {
+            margin-left: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 0;
+            z-index: 50;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            margin: 0;
+            padding: 8px 16px;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f7fafc;
+            color: #2b6cb0;
+        }
+
+        .dropdown-menu .divider {
+            height: 1px;
+            background: #edf2f7;
+            margin: 6px 0;
+        }
+
+        .dropdown-menu .header-label {
+            padding: 4px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a0aec0;
+            font-weight: 700;
+        }
+
+        .hero {
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            max-width: 750px;
+        }
+
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .quick-nav a {
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #2d3748;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .quick-nav a:hover {
+            border-color: #2b6cb0;
+            color: #2b6cb0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-block {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .section-block h2 {
+            font-size: 1.6rem;
+            color: #1a202c;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-block h3 {
+            font-size: 1.25rem;
+            color: #2b6cb0;
+            margin: 24px 0 12px 0;
+        }
+
+        p, ul, ol {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7fafc;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .subject-card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject-card:hover {
+            border-color: #2b6cb0;
+        }
+
+        .interactive-box {
+            background: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-left: 4px solid #2b6cb0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .interactive-box h4 {
+            font-size: 1.1rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            background: #2b6cb0;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #2c5282;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+            margin-left: 8px;
+        }
+
+        .btn-outline:hover {
+            background: #edf2f7;
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: #ffffff;
+        }
+
+        .result-box {
+            background: #edf2f7;
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-top: 14px;
+            font-size: 0.95rem;
+        }
+
+        .table-scores {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        footer {
+            max-width: 900px;
+            margin: 60px auto 20px auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="logo">Monty Boey</a>
+            <div class="nav-links">
+                <a href="/about.html">About</a>
+                <a href="/articles.html">Articles</a>
+                <div class="dropdown">
+                    <a href="/learning.html" class="active">Learning ▾</a>
+                    <div class="dropdown-menu">
+                        <span class="header-label">Methodology</span>
+                        <a href="/learning.html">Study System Hub</a>
+                        <div class="divider"></div>
+                        <span class="header-label">Subject Toolkits</span>
+                        <a href="/embedded-systems.html">Embedded Systems</a>
+                    </div>
+                </div>
+                <a href="/focus.html">Focus</a>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <h1>Evidence-Based Learning & Study Hub</h1>
+            <p>A structured operating system for learning complex subjects. Built on cognitive neuroscience, active recall, schema creation, and spaced retrieval.</p>
+        </div>
+
+        <div class="quick-nav">
+            <a href="#three-c">1. The 3 C's Learning Cycle</a>
+            <a href="#active-recall">2. Active Recall & The Testing Effect</a>
+            <a href="#spaced-rep">3. Spaced Repetition Engine</a>
+            <a href="#note-secrets">4. High-Yield Note Taking</a>
+            <a href="#feynman">5. The Feynman Technique</a>
+            <a href="#subjects">6. Subject Toolkits</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="three-c" class="section-block">
+            <h2>1. The 3 C's Learning Cycle</h2>
+            <p>Most students struggle not from a lack of intellect, but from mistaking familiarity for true retention. Passive habits (such as highlighting pages, re-reading passages, or copying lecture slides word-for-word) give an illusion of competence. Real learning requires working through the continuous three-stage cycle:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Core Objective</th>
+                        <th>Actionable Rule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Collect</strong></td>
+                        <td>Filter high-yield concepts rather than acting like a sponge.</td>
+                        <td>Ask: <em>"Why does this matter?"</em> If you cannot pinpoint why an idea is essential, avoid writing it down until you possess sufficient context.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Connect</strong></td>
+                        <td>Form schemas and link new ideas into an interconnected web.</td>
+                        <td>Memory is a web, not a filing cabinet. Draw concept maps, flowcharts, or visual diagrams rather than recording isolated sentences.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Challenge</strong></td>
+                        <td>Test your understanding against reality through deliberate friction.</td>
+                        <td>Complete practice problems without looking at solutions. Explain ideas simply from memory. Real learning should feel mentally demanding.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="active-recall" class="section-block">
+            <h2>2. Active Recall & The Testing Effect</h2>
+            <p>Every time your brain searches its memory banks to retrieve an answer without looking at the source, the underlying neural pathways grow stronger. Passive exposure does not build long-term memory; active retrieval does.</p>
+
+            <h3>How to Implement Active Recall</h3>
+            <ul>
+                <li><strong>The Closed-Book Blurting Method:</strong> Read a section of study material once. Close the source entirely. Take a blank sheet of paper and write down everything you remember. Open the book in a different coloured pen and fill in the omissions.</li>
+                <li><strong>Question-Driven Notes:</strong> Instead of writing statements (e.g. <em>"Von Neumann uses a single bus"</em>), phrase your notes as questions (e.g. <em>"What is the key bottleneck of the Von Neumann architecture?"</em>). When reviewing, quiz yourself before revealing the answer.</li>
+                <li><strong>Exam-Writer Perspective:</strong> For every concept you study, ask yourself: <em>"If I were writing an exam question to trip students up on this topic, how would I design it?"</em></li>
+            </ul>
+
+            <div class="interactive-box">
+                <h4>Interactive Blurting & Retrieval Sandbox</h4>
+                <p>Type a topic you want to test right now. Close your other tabs, set a 60-second mental timer, and blurt everything you know into the box below from pure memory.</p>
+                <div class="input-group">
+                    <label for="blurt-topic">Topic Name:</label>
+                    <input type="text" id="blurt-topic" placeholder="e.g. RISC vs CISC or Moore vs Mealy">
+                </div>
+                <div class="input-group">
+                    <label for="blurt-input">Memory Retrieval (Closed Book):</label>
+                    <textarea id="blurt-input" rows="4" placeholder="Write everything you can recall without checking your notes..."></textarea>
+                </div>
+                <button class="btn" onclick="saveBlurt()">Submit Retrieval</button>
+                <button class="btn btn-outline" onclick="clearBlurt()">Clear</button>
+
+                <div id="blurt-history" class="result-box" style="display:none; margin-top:14px;"></div>
+            </div>
+        </section>
+
+        <section id="spaced-rep" class="section-block">
+            <h2>3. Spaced Repetition Engine</h2>
+            <p>Hermann Ebbinghaus proved that human memory decays exponentially along a <em>Forgetting Curve</em>. Reviewing a topic at calculated intervals flattens this curve, turning short-term memories into permanent knowledge.</p>
+
+            <div class="interactive-box">
+                <h4>Interval Schedule Calculator</h4>
+                <p>Select when you first learned a topic to generate your optimal review schedule:</p>
+                <div class="input-group">
+                    <label for="session-date">Initial Study Date:</label>
+                    <input type="date" id="session-date" onchange="calcIntervals()">
+                </div>
+
+                <div id="interval-results" class="result-box" style="display:none;">
+                    <table class="table-scores">
+                        <thead>
+                            <tr>
+                                <th>Review Round</th>
+                                <th>Timing Interval</th>
+                                <th>Scheduled Target Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="interval-rows"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="note-secrets" class="section-block">
+            <h2>4. High-Yield Note-Taking Principles</h2>
+            <p>Notes are meant to serve as an <strong>extension of your thinking</strong>, not a passive transcription service.</p>
+
+            <ul>
+                <li><strong>Avoid Walls of Text:</strong> Never transcribe verbatim sentences. Translate blocks of text into diagrams, flowcharts, or structured tables.</li>
+                <li><strong>Accept Cognitive Load:</strong> If you write down everything the lecturer says immediately, the information bypasses your brain entirely. Hold the idea in your working memory, chew on it, synthesise it, and only then record the core takeaway.</li>
+                <li><strong>Iterative Versions:</strong> Notes taken in class are version one. Version two adds missing links after completing practice tasks. Version three condenses the topic onto a single reference sheet.</li>
+                <li><strong>Learn Technical Concepts in Words First:</strong> When approaching mathematical or engineering equations, explain the underlying mechanism in plain words before memorising formulas or plugging in numbers.</li>
+            </ul>
+        </section>
+
+        <section id="feynman" class="section-block">
+            <h2>5. The Feynman Technique Sandbox</h2>
+            <p>Physicist Richard Feynman argued that if you cannot explain a concept to a child using simple language, you do not truly understand it yourself.</p>
+
+            <div class="interactive-box">
+                <h4>Simplicity & Jargon Checker</h4>
+                <p>Type an explanation of a technical concept using simple, conversational words. Our analyser will identify overly long sentences and complex jargon so you can simplify your delivery.</p>
+                <div class="input-group">
+                    <textarea id="feynman-text" rows="3" placeholder="Explain how memory works, how a cache operates, or what an FPGA does using simple words..."></textarea>
+                </div>
+                <button class="btn" onclick="checkFeynman()">Analyse Explanation</button>
+
+                <div id="feynman-results" class="result-box" style="display:none;"></div>
+            </div>
+        </section>
+
+        <section id="subjects" class="section-block">
+            <h2>6. Dedicated Subject Toolkits</h2>
+            <p>Apply these learning frameworks directly to specific engineering and technical fields using our dedicated subject guides and interactive simulators:</p>
+
+            <div class="subject-card">
+                <div>
+                    <h3 style="margin: 0 0 4px 0;">Embedded Systems & Hardware Architecture</h3>
+                    <p style="margin: 0; font-size: 0.9rem; color: #718096;">FPGAs, VHDL synthesizability, RISC vs CISC, stack call frames, MMIO bitboards, and real-time scheduling.</p>
+                </div>
+                <a href="/embedded-systems.html" class="btn">Launch Guide →</a>
+            </div>
+
+            <div class="subject-card" style="opacity: 0.7;">
+                <div>
+                    <h3 style="margin: 0 0 4px 0;">Control Systems & Telemetry (Coming Soon)</h3>
+                    <p style="margin: 0; font-size: 0.9rem; color: #718096;">Laplace transforms, state-space representations, PID control loops, and stability analysis.</p>
+                </div>
+                <span class="btn btn-outline" style="cursor: default;">In Development</span>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Monty Boey. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Blurt & Retrieval Sandbox
+        function saveBlurt() {
+            const topic = document.getElementById('blurt-topic').value.trim();
+            const text = document.getElementById('blurt-input').value.trim();
+            const hist = document.getElementById('blurt-history');
+
+            if (!topic || !text) {
+                alert('Please enter both a topic name and your retrieved notes.');
+                return;
+            }
+
+            const wordCount = text.split(/\s+/).filter(Boolean).length;
+            hist.style.display = 'block';
+            hist.innerHTML = `<strong>Topic:</strong> ${topic} (${wordCount} words recorded from memory)<br>
+                              <p style="margin-top: 6px; font-style: italic;">"${text}"</p>
+                              <div style="font-size: 0.85rem; color: #2b6cb0; margin-top: 8px;">
+                                  <strong>Next step:</strong> Open your reference notes now. Cross-reference what you missed and mark the gaps in your knowledge web.
+                              </div>`;
+        }
+
+        function clearBlurt() {
+            document.getElementById('blurt-topic').value = '';
+            document.getElementById('blurt-input').value = '';
+            document.getElementById('blurt-history').style.display = 'none';
+        }
+
+        // Spaced Repetition Interval Calculator
+        function calcIntervals() {
+            const dateVal = document.getElementById('session-date').value;
+            const res = document.getElementById('interval-results');
+            const tbody = document.getElementById('interval-rows');
+
+            if (!dateVal) {
+                res.style.display = 'none';
+                return;
+            }
+
+            const baseDate = new Date(dateVal);
+            const intervals = [
+                { label: 'Round 1 (Immediate)', days: 1, desc: '1 Day Later' },
+                { label: 'Round 2 (Consolidation)', days: 3, desc: '3 Days Later' },
+                { label: 'Round 3 (Strengthening)', days: 7, desc: '1 Week Later' },
+                { label: 'Round 4 (Permanent Schema)', days: 21, desc: '3 Weeks Later' },
+                { label: 'Round 5 (Final Mastery)', days: 45, desc: '1.5 Months Later' }
+            ];
+
+            tbody.innerHTML = '';
+            intervals.forEach(i => {
+                const target = new Date(baseDate);
+                target.setDate(target.getDate() + i.days);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td><strong>${i.label}</strong></td>
+                                <td>${i.desc}</td>
+                                <td><code>${target.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</code></td>`;
+                tbody.appendChild(tr);
+            });
+
+            res.style.display = 'block';
+        }
+
+        // Feynman Simplicity Checker
+        function checkFeynman() {
+            const text = document.getElementById('feynman-text').value.trim();
+            const res = document.getElementById('feynman-results');
+
+            if (!text) {
+                res.style.display = 'none';
+                return;
+            }
+
+            const words = text.split(/\s+/).filter(Boolean);
+            const sentences = text.split(/[.!?]+/).filter(Boolean);
+            const avgWordLen = words.reduce((acc, w) => acc + w.length, 0) / (words.length || 1);
+            const wordsPerSentence = words.length / (sentences.length || 1);
+
+            let verdict = '';
+            if (wordsPerSentence <= 14 && avgWordLen < 5.2) {
+                verdict = '<span style="color:#22543d; font-weight:bold;">Great simplicity!</span> Clear, digestible pacing suitable for teaching anyone.';
+            } else {
+                verdict = '<span style="color:#742a2a; font-weight:bold;">Slightly complex:</span> Sentences are fairly dense. Try splitting long thoughts into shorter, punchy sentences.';
+            }
+
+            res.style.display = 'block';
+            res.innerHTML = `<strong>Word Count:</strong> ${words.length} words | 
+                             <strong>Average Sentence Length:</strong> ${wordsPerSentence.toFixed(1)} words<br>
+                             <strong>Clarity Score:</strong> ${verdict}`;
+        }
+
+        // Set default date for schedule calculator
+        document.getElementById('session-date').valueAsDate = new Date();
+        calcIntervals();
+    </script>
+</body>
+</html>
