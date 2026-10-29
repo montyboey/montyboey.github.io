@@ -115,6 +115,74 @@
             font-size: 0.9rem;
             color: #a0aec0;
         }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 20px;
+        }
+        
+        .dropdown > a {
+            margin-left: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 0;
+            z-index: 50;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            margin: 0;
+            padding: 8px 16px;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f7fafc;
+            color: #2b6cb0;
+        }
+        
+        .dropdown-menu .divider {
+            height: 1px;
+            background: #edf2f7;
+            margin: 6px 0;
+        }
+        
+        .dropdown-menu .header-label {
+            padding: 4px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a0aec0;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -125,7 +193,16 @@
             <div class="nav-links">
                 <a href="/about.html">About</a>
                 <a href="/articles.html">Articles</a>
-                <a href="/learning.html">Learning</a>
+                <div class="dropdown">
+                    <a href="/learning.html">Learning ▾</a>
+                    <div class="dropdown-menu">
+                        <span class="header-label">Methodology</span>
+                        <a href="/learning.html">Study System Hub</a>
+                        <div class="divider"></div>
+                        <span class="header-label">Subject Toolkits</span>
+                        <a href="/embedded-systems.html">Embedded Systems</a>
+                    </div>
+                </div>
                 <a href="/focus.html">Focus</a>
             </div>
         </nav>
