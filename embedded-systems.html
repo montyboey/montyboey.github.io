@@ -40,6 +40,11 @@
             text-decoration: none;
         }
 
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-links a {
             margin-left: 20px;
             text-decoration: none;
@@ -49,6 +54,70 @@
 
         .nav-links a:hover, .nav-links a.active {
             color: #2b6cb0;
+        }
+
+        /* Dropdown Navigation Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .dropdown > a {
+            margin-left: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 0;
+            z-index: 50;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            margin: 0;
+            padding: 8px 16px;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f7fafc;
+            color: #2b6cb0;
+        }
+
+        .dropdown-menu .divider {
+            height: 1px;
+            background: #edf2f7;
+            margin: 6px 0;
+        }
+
+        .dropdown-menu .header-label {
+            padding: 4px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a0aec0;
+            font-weight: 700;
         }
 
         .hero {
@@ -230,7 +299,7 @@
             margin-bottom: 4px;
         }
 
-        .input-group input, .input-group select {
+        .input-group select, .input-group input {
             width: 100%;
             padding: 8px 12px;
             border: 1px solid #cbd5e0;
@@ -286,7 +355,7 @@
             color: #2b6cb0;
         }
 
-        /* Call stack visualiser */
+        /* Stack Visualiser */
         .stack-diagram {
             display: flex;
             flex-direction: column-reverse;
@@ -327,7 +396,6 @@
 
         .badge-green { background: #c6f6d5; color: #22543d; }
         .badge-red { background: #fed7d7; color: #742a2a; }
-        .badge-blue { background: #bee3f8; color: #2b6cb0; }
 
         .result-box {
             background: #edf2f7;
@@ -354,7 +422,16 @@
             <div class="nav-links">
                 <a href="/about.html">About</a>
                 <a href="/articles.html">Articles</a>
-                <a href="/learning.html" class="active">Learning</a>
+                <div class="dropdown">
+                    <a href="/learning.html" class="active">Learning ▾</a>
+                    <div class="dropdown-menu">
+                        <span class="header-label">Methodology</span>
+                        <a href="/learning.html">Study System Hub</a>
+                        <div class="divider"></div>
+                        <span class="header-label">Subject Toolkits</span>
+                        <a href="/embedded-systems.html">Embedded Systems</a>
+                    </div>
+                </div>
                 <a href="/focus.html">Focus</a>
             </div>
         </nav>
@@ -374,7 +451,6 @@
     </header>
 
     <main>
-        <!-- MODULE 1 -->
         <section id="module-fpga" class="module">
             <h2>Module 1: FPGAs, Digital Logic & VHDL</h2>
             <p>Digital computing begins with hardware design. Microcontrollers run sequences of fixed instructions on pre-etched silicon. In contrast, <strong>Field Programmable Gate Arrays (FPGAs)</strong> are reconfigurable arrays of logic blocks, lookup tables, and flip-flops wired together on demand.</p>
@@ -414,9 +490,9 @@
             <h3>VHDL Synthesizability Rules</h3>
             <p>Hardware Description Languages (HDLs) do not execute sequentially like C or Python. Statements outside of a process run <strong>concurrently</strong> in physical silicon. Some statements are purely for testbenches and simulations, while others synthesize into real gates:</p>
             <ul>
-                <li><code>a &lt;= b and c;</code>: <strong>Synthesizable.</strong> Forms a physical combinational AND gate.</li>
+                <li><code>a <= b and c;</code>: <strong>Synthesizable.</strong> Forms a physical combinational AND gate.</li>
                 <li><code>wait for 4 ns;</code>: <strong>Not Synthesizable.</strong> Physical silicon has no inherent concept of arbitrary nanosecond pauses. Delays belong only in simulation testbenches.</li>
-                <li><code>c &lt;= not c after 1 ns;</code>: <strong>Not Synthesizable.</strong> The <code>after 1 ns</code> construct cannot be synthesized into static logic.</li>
+                <li><code>c <= not c after 1 ns;</code>: <strong>Not Synthesizable.</strong> The <code>after 1 ns</code> construct cannot be synthesized into static logic.</li>
                 <li><code>signal g : signed(5 downto 0) := to_signed(-12, 6);</code>: <strong>Synthesizable.</strong> Initializes 6 physical registers with the two's complement value of -12 (<code>110100</code>) during FPGA bitstream configuration.</li>
                 <li><code>TH : entity work.module port map (...);</code>: <strong>Synthesizable.</strong> Instantiates a modular hardware component and wires its inputs and outputs.</li>
             </ul>
@@ -456,8 +532,8 @@
                     <select id="vhdl-select" onchange="checkVhdl()">
                         <option value="">-- Choose a code statement --</option>
                         <option value="1">wait for 10 ns;</option>
-                        <option value="2">y &lt;= a xor b;</option>
-                        <option value="3">clk &lt;= not clk after 5 ns;</option>
+                        <option value="2">y <= a xor b;</option>
+                        <option value="3">clk <= not clk after 5 ns;</option>
                         <option value="4">signal count : unsigned(3 downto 0) := "0000";</option>
                     </select>
                 </div>
@@ -465,7 +541,6 @@
             </div>
         </section>
 
-        <!-- MODULE 2 -->
         <section id="module-arch" class="module">
             <h2>Module 2: Processor Architectures & The Stack</h2>
             <p>Every central processing unit relies on structural units: the Control Unit (CU) to decode instructions, the Arithmetic Logic Unit (ALU) to execute math, and Registers for fast storage.</p>
@@ -523,7 +598,6 @@
             </div>
         </section>
 
-        <!-- MODULE 3 -->
         <section id="module-mmio" class="module">
             <h2>Module 3: Memory-Mapped I/O & C Registers</h2>
             <p>Embedded systems interact with timers, GPIO pins, and network controllers through <strong>Memory-Mapped Input/Output (MMIO)</strong>. Hardware registers appear as regular addresses in the CPU memory space.</p>
@@ -535,10 +609,10 @@
 
             <h3>Bitwise Manipulation Rules in C</h3>
             <ul>
-                <li><strong>Set bits (make 1):</strong> Use bitwise OR: <code>*reg |= (1 &lt;&lt; bit);</code></li>
-                <li><strong>Clear bits (make 0):</strong> Use bitwise AND with inverted mask: <code>*reg &amp;= ~(1 &lt;&lt; bit);</code></li>
-                <li><strong>Toggle bits (switch 0 to 1, or 1 to 0):</strong> Use bitwise XOR: <code>*reg ^= (1 &lt;&lt; bit);</code></li>
-                <li><strong>Read bits:</strong> Mask with bitwise AND: <code>int state = (*reg &gt;&gt; bit) &amp; 1;</code></li>
+                <li><strong>Set bits (make 1):</strong> Use bitwise OR: <code>*reg |= (1 << bit);</code></li>
+                <li><strong>Clear bits (make 0):</strong> Use bitwise AND with inverted mask: <code>*reg &= ~(1 << bit);</code></li>
+                <li><strong>Toggle bits (switch 0 to 1, or 1 to 0):</strong> Use bitwise XOR: <code>*reg ^= (1 << bit);</code></li>
+                <li><strong>Read bits:</strong> Mask with bitwise AND: <code>int state = (*reg >> bit) & 1;</code></li>
             </ul>
 
             <div class="interactive-box">
@@ -567,7 +641,6 @@
             </div>
         </section>
 
-        <!-- MODULE 4 -->
         <section id="module-parallel" class="module">
             <h2>Module 4: Parallel Computing & Task Scheduling</h2>
             <p>Real-time digital signal processing and embedded algorithms require careful execution scheduling across single or multiple processor cores.</p>
@@ -617,7 +690,7 @@
 
             <div class="interactive-box">
                 <h4>Interactive Multi-Core Scheduling Calculator</h4>
-                <p>Calculate execution metrics for an algorithm with <strong>9 primitive tasks</strong> (each taking 1 &mu;s) with a critical path of 4 &mu;s:</p>
+                <p>Calculate execution metrics for an algorithm with <strong>9 primitive tasks</strong> (each taking 1 μs) with a critical path of 4 μs:</p>
                 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
                     <div class="input-group">
                         <label>Number of CPU Cores:</label>
@@ -629,21 +702,20 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>Task Time Slot (&mu;s):</label>
+                        <label>Task Time Slot (μs):</label>
                         <input type="number" id="calc-slot" value="1" min="1" step="0.5" onchange="runScheduleCalc()">
                     </div>
                 </div>
 
                 <div id="schedule-results" class="result-box">
-                    <div><strong>Total Active Work:</strong> 9 &mu;s</div>
-                    <div><strong>Scheduled Execution Time:</strong> <span id="res-texec">4 &mu;s</span></div>
+                    <div><strong>Total Active Work:</strong> 9 μs</div>
+                    <div><strong>Scheduled Execution Time:</strong> <span id="res-texec">4 μs</span></div>
                     <div><strong>Maximum Sample Rate:</strong> <span id="res-fmax">250 kHz</span></div>
                     <div><strong>Resource Utilisation:</strong> <span id="res-util" style="color: #2b6cb0; font-weight: bold;">75%</span></div>
                 </div>
             </div>
         </section>
 
-        <!-- MODULE 5 -->
         <section id="module-os" class="module">
             <h2>Module 5: Operating Systems, Concurrency & Hardware Security</h2>
             <p>Embedded systems progress from bare-metal super-loops to Real-Time Operating Systems (RTOS) or full embedded Linux platforms to manage complex multi-tasking workloads.</p>
@@ -666,10 +738,10 @@
 
             <h3>Concurrency: Mutexes, Race Conditions & Deadlocks</h3>
             <p>When multiple threads share variables, a <strong>race condition</strong> occurs if both threads write to memory at the same time. To secure a <strong>critical section</strong>, developers employ mutual exclusion (<strong>mutexes</strong>):</p>
-            <pre>pthread_mutex_lock(&amp;lock);
+            <pre>pthread_mutex_lock(&lock);
 // Critical section: read and write shared data safely
 shared_counter++;
-pthread_mutex_unlock(&amp;lock);</pre>
+pthread_mutex_unlock(&lock);</pre>
             <p>A <strong>deadlock</strong> occurs when two threads wait indefinitely for locks held by each other. Preventing circular waits and locking resources in consistent order eliminates deadlocks.</p>
 
             <h3>Pseudo-Random Number Generators (LFSRs)</h3>
@@ -692,7 +764,7 @@ pthread_mutex_unlock(&amp;lock);</pre>
     </main>
 
     <footer>
-        <p>&copy; 2026 Monty Boey. All rights reserved.</p>
+        <p>© 2026 Monty Boey. All rights reserved.</p>
     </footer>
 
     <script>
@@ -759,6 +831,10 @@ pthread_mutex_unlock(&amp;lock);</pre>
                 slots: [
                     { name: '1000: myval1', val: '8', active: false },
                     { name: '1004: myval2', val: '2', active: false },
+                    { name: '1008: myres', val: 'uninitialised', active: false },
+                    { name: '1012: arg a', val: '8', active: false },
+                    { name: '1016: arg b', val: '2', active: false },
+                    { name: '1020: Return PC', val: 'Line 10 (main)', active: false },
                     { name: '1008: myres', val: '16', active: true }
                 ],
                 expl: 'Function epilogue restores old FP, pops the return address into the Program Counter, and places 16 into myres in main().'
@@ -844,7 +920,7 @@ pthread_mutex_unlock(&amp;lock);</pre>
             if (cores === 1) {
                 execSlots = totalTasks; // 9 slots
             } else if (cores === 2) {
-                execSlots = 5; // cannot finish 9 tasks on 2 cores in 4 slots (max 8)
+                execSlots = 5; // cannot finish 9 tasks on 2 cores in 4 slots
             } else {
                 execSlots = 4; // 3 or 4 cores meet critical path of 4
             }
@@ -874,7 +950,7 @@ pthread_mutex_unlock(&amp;lock);</pre>
 
             document.getElementById('lfsr-state').textContent = lfsrBits.join(' ');
             document.getElementById('lfsr-fb').textContent = b3 + ' XOR ' + b0 + ' = ' + feedback;
-            document.getElementById('lfsr-history').textContent = lfsrHist.join(' → ');
+            document.getElementById('lfsr-history').textContent = lfsrHist.join(' -> ');
         }
 
         function resetLfsr() {
