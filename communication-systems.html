@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Systems Master Guide | Monty Boey</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+            padding: 20px;
+        }
+
+        header {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 0 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a202c;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #2b6cb0;
+        }
+
+        /* Dropdown Navigation Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .dropdown > a {
+            margin-left: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 0;
+            z-index: 50;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            margin: 0;
+            padding: 8px 16px;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f7fafc;
+            color: #2b6cb0;
+        }
+
+        .dropdown-menu .divider {
+            height: 1px;
+            background: #edf2f7;
+            margin: 6px 0;
+        }
+
+        .dropdown-menu .header-label {
+            padding: 4px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a0aec0;
+            font-weight: 700;
+        }
+
+        .hero {
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            max-width: 750px;
+        }
+
+        .module-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .module-nav a {
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #2d3748;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .module-nav a:hover {
+            border-color: #2b6cb0;
+            color: #2b6cb0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .module {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .module h2 {
+            font-size: 1.6rem;
+            color: #1a202c;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .module h3 {
+            font-size: 1.25rem;
+            color: #2b6cb0;
+            margin: 24px 0 12px 0;
+        }
+
+        p, ul, ol {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7fafc;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        code, pre {
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #805ad5;
+        }
+
+        pre {
+            background: #1a202c;
+            color: #edf2f7;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        
+        .math-block {
+            background: #f7fafc;
+            border-left: 4px solid #2b6cb0;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2rem;
+            overflow-x: auto;
+        }
+
+        .interactive-box {
+            background: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-left: 4px solid #2b6cb0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .interactive-box h4 {
+            font-size: 1.1rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            background: #2b6cb0;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #2c5282;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+            margin-left: 8px;
+        }
+
+        .btn-outline:hover {
+            background: #edf2f7;
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: #ffffff;
+        }
+
+        /* Signal Visualiser */
+        .signal-canvas-container {
+            width: 100%;
+            height: 200px;
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            position: relative;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .signal-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .result-box {
+            background: #edf2f7;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-size: 0.95rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-blue { background: #bee3f8; color: #2b6cb0; }
+        .badge-red { background: #fed7d7; color: #742a2a; }
+
+        footer {
+            max-width: 900px;
+            margin: 60px auto 20px auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="logo">Monty Boey</a>
+            <div class="nav-links">
+                <a href="/about.html">About</a>
+                <a href="/articles.html">Articles</a>
+                <div class="dropdown">
+                    <a href="/learning.html" class="active">Learning &#9662;</a>
+                    <div class="dropdown-menu">
+                        <span class="header-label">Methodology</span>
+                        <a href="/learning.html">Study System Hub</a>
+                        <div class="divider"></div>
+                        <span class="header-label">Subject Toolkits</span>
+                        <a href="/embedded-systems.html">Embedded Systems</a>
+                        <a href="/communication-systems.html">Communication Systems</a>
+                    </div>
+                </div>
+                <a href="/focus.html">Focus</a>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <h1>Communication Systems & DSP</h1>
+            <p>An interactive guide to signal analysis, Fourier series harmonics, real-world channels, AWGN noise, and digital modulation techniques.</p>
+        </div>
+
+        <div class="module-nav">
+            <a href="#module-intro">1. System Architecture</a>
+            <a href="#module-fourier">2. Fourier & Harmonics</a>
+            <a href="#module-awgn">3. Channels & AWGN</a>
+            <a href="#module-demod">4. Demodulation</a>
+            <a href="#module-psd">5. Power Spectral Density</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- MODULE 1 -->
+        <section id="module-intro" class="module">
+            <h2>Module 1: The Communication System Architecture</h2>
+            <p>The goal of any communication system is to transport a message from a source to a destination efficiently and reliably over a physical medium.</p>
+
+            <h3>Core Components</h3>
+            <ul>
+                <li><strong>Transducer (Input):</strong> Converts physical messages (voice, temperature, light) into an electrical signal.</li>
+                <li><strong>Transmitter:</strong> Modulates, amplifies, and couples the signal onto the communication channel.</li>
+                <li><strong>Channel:</strong> The physical medium (air, copper wire, fiber optic cable). Real-world channels introduce attenuation, distortion, and noise.</li>
+                <li><strong>Receiver:</strong> Demodulates the signal, filters out noise, and reconstructs the original electrical waveform.</li>
+                <li><strong>Transducer (Output):</strong> Converts the electrical signal back into a physical message (e.g., a speaker producing sound).</li>
+            </ul>
+
+            <h3>Key Signal Processing Goals</h3>
+            <ul>
+                <li><strong>Channel Analysis:</strong> Understanding required bandwidth and how signals degrade.</li>
+                <li><strong>Compression:</strong> Using frequency-domain techniques (like MP3 or JPEG) to store signals efficiently.</li>
+                <li><strong>Multiplexing:</strong> Sending multiple distinct signals simultaneously on different frequency bands to share a single channel.</li>
+            </ul>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section id="module-fourier" class="module">
+            <h2>Module 2: Fourier Series & Harmonics</h2>
+            <p>The Fourier Series states that any periodic signal can be represented as a sum of fundamental sinusoidal waves (sine and cosine) at different frequencies and amplitudes.</p>
+
+            <h3>The Fourier Series Equation</h3>
+            <div class="math-block">
+                g(t) = a<sub>0</sub> + &sum; (a<sub>n</sub> cos(n&omega;<sub>0</sub>t) + b<sub>n</sub> sin(n&omega;<sub>0</sub>t))
+            </div>
+            <p>Where:</p>
+            <ul>
+                <li><code>a<sub>0</sub></code> is the DC component (average value of the signal).</li>
+                <li><code>&omega;<sub>0</sub></code> is the fundamental angular frequency (<code>2&pi; / T<sub>0</sub></code>).</li>
+                <li><code>n</code> is an integer representing the harmonic number.</li>
+            </ul>
+
+            <h3>Understanding Harmonics</h3>
+            <p><strong>Harmonics</strong> are the frequency components of a periodic signal that occur at integer multiples of the fundamental frequency.</p>
+            <ul>
+                <li><strong>1st Harmonic (Fundamental):</strong> <code>n=1</code>, frequency = <code>f<sub>0</sub></code>.</li>
+                <li><strong>2nd Harmonic:</strong> <code>n=2</code>, frequency = <code>2f<sub>0</sub></code>.</li>
+                <li><strong>3rd Harmonic:</strong> <code>n=3</code>, frequency = <code>3f<sub>0</sub></code>.</li>
+            </ul>
+
+            <div class="interactive-box">
+                <h4>Interactive Fourier Synthesis</h4>
+                <p>Observe how adding odd harmonics creates a square wave from pure sine waves.</p>
+                
+                <div class="input-group">
+                    <label>Number of Harmonics to Include:</label>
+                    <input type="range" id="harmonic-slider" min="1" max="15" step="2" value="1" oninput="drawFourier()">
+                    <div id="harmonic-val" style="text-align: center; font-weight: bold; margin-top: 4px;">1 Harmonic (Fundamental Sine Wave)</div>
+                </div>
+
+                <div class="signal-canvas-container">
+                    <canvas id="fourier-canvas" class="signal-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section id="module-awgn" class="module">
+            <h2>Module 3: Channels & Additive White Gaussian Noise</h2>
+            <p>In the real world, a transmitted signal <code>s(t)</code> never arrives perfectly. The most common mathematical model for channel degradation is the <strong>AWGN Channel</strong>.</p>
+
+            <h3>AWGN (Additive White Gaussian Noise)</h3>
+            <div class="math-block">
+                r(t) = s(t) + n(t)
+            </div>
+            <ul>
+                <li><strong>Additive:</strong> The noise is simply added to the transmitted signal.</li>
+                <li><strong>White:</strong> The noise power is spread evenly across all frequencies (like white light contains all colors).</li>
+                <li><strong>Gaussian:</strong> The amplitude of the noise follows a normal (bell-curve) distribution in the time domain.</li>
+            </ul>
+
+            <div class="interactive-box">
+                <h4>Interactive AWGN Channel Simulator</h4>
+                <p>Add varying levels of Gaussian noise to a clean transmitted signal to see what the receiver actually sees.</p>
+                
+                <div class="input-group">
+                    <label>Noise Level (Variance):</label>
+                    <input type="range" id="noise-slider" min="0" max="100" value="0" oninput="drawAwgn()">
+                    <div id="noise-val" style="text-align: center; font-weight: bold; margin-top: 4px;">0% Noise (Clean Signal)</div>
+                </div>
+
+                <div class="signal-canvas-container">
+                    <canvas id="awgn-canvas" class="signal-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section id="module-demod" class="module">
+            <h2>Module 4: Correlator Demodulation</h2>
+            <p>The receiver's job is to extract the original message from the noisy received signal <code>r(t)</code>. The <strong>Correlator Demodulator</strong> achieves this by converting the continuous waveform into an N-dimensional vector of sufficient statistics.</p>
+
+            <h3>The Correlation Process</h3>
+            <ol>
+                <li><strong>Multiply:</strong> The received signal <code>r(t)</code> is multiplied by a known basis function <code>&psi;<sub>1</sub>(t)</code> (the exact shape of the expected transmitted pulse).</li>
+                <li><strong>Integrate:</strong> The product is integrated over the duration of the bit period <code>T<sub>b</sub></code>.</li>
+                <li><strong>Sample:</strong> The result of the integral is a single numerical value, <code>r</code>, which represents the projection of the received signal onto that basis function.</li>
+            </ol>
+            
+            <p>Because white noise is random and has a zero mean, integrating it over time effectively averages it out, while the true signal energy accumulates.</p>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section id="module-psd" class="module">
+            <h2>Module 5: Power Spectral Density (PSD) of Line Codes</h2>
+            <p>Line codes define how digital bits are represented as physical voltage pulses on a wire (e.g., Return-to-Zero, Non-Return-to-Zero, Manchester). The <strong>Power Spectral Density</strong> tells us how the power of that line code is distributed across the frequency spectrum, dictating the required channel bandwidth.</p>
+
+            <h3>PSD Mathematical Model</h3>
+            <p>The PSD of a line coding scheme is determined by the shape of the basic pulse <code>v(t)</code> and the statistical properties of the random symbol sequence <code>a<sub>n</sub></code>.</p>
+            <ul>
+                <li><code>v(t)</code>: The unit amplitude pulse shape (duration <code>T<sub>b</sub></code>).</li>
+                <li><code>V(f)</code>: The Fourier transform of the basic pulse.</li>
+                <li><code>&mu;<sub>a</sub> = E[a<sub>n</sub>]</code>: The average (mean) amplitude of the symbols.</li>
+                <li><code>&sigma;<sub>a</sub><sup>2</sup></code>: The variance of the random symbol sequence.</li>
+            </ul>
+            <p>Different line codes shape the PSD differently. For example, Manchester encoding shifts power away from DC (0 Hz), making it suitable for channels that cannot carry DC signals.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Monty Boey. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Fourier Series Interactive Canvas
+        function drawFourier() {
+            const canvas = document.getElementById('fourier-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            // Handle retina displays
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentNode.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            const w = rect.width;
+            const h = rect.height;
+            const midY = h / 2;
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            // Draw center line
+            ctx.beginPath();
+            ctx.moveTo(0, midY);
+            ctx.lineTo(w, midY);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const numHarmonics = parseInt(document.getElementById('harmonic-slider').value);
+            document.getElementById('harmonic-val').textContent = numHarmonics === 1 ? '1 Harmonic (Fundamental Sine Wave)' : `${numHarmonics} Harmonics (Approaching Square Wave)`;
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#2b6cb0';
+            ctx.lineWidth = 3;
+            
+            // Plot Fourier series for square wave: sum of (1/n)*sin(nx) for odd n
+            for (let x = 0; x < w; x++) {
+                // scale x to give about 2 full periods across the width
+                let t = (x / w) * Math.PI * 4; 
+                let y = 0;
+                
+                for (let n = 1; n <= numHarmonics; n += 2) {
+                    y += (1 / n) * Math.sin(n * t);
+                }
+                
+                // Scale y for visual amplitude
+                const scaledY = midY - (y * (h / 3.5));
+                
+                if (x === 0) ctx.moveTo(x, scaledY);
+                else ctx.lineTo(x, scaledY);
+            }
+            ctx.stroke();
+        }
+
+        // AWGN Interactive Canvas
+        function drawAwgn() {
+            const canvas = document.getElementById('awgn-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentNode.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            const w = rect.width;
+            const h = rect.height;
+            const midY = h / 2;
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            ctx.beginPath();
+            ctx.moveTo(0, midY);
+            ctx.lineTo(w, midY);
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const noiseLevel = parseInt(document.getElementById('noise-slider').value);
+            document.getElementById('noise-val').textContent = noiseLevel === 0 ? '0% Noise (Clean Signal)' : `${noiseLevel}% Additive Noise`;
+            const noiseAmplitude = (noiseLevel / 100) * (h / 4);
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#e53e3e';
+            ctx.lineWidth = 2;
+            
+            // Clean signal: simple BPSK style (1, -1, 1, -1) represented as distinct blocks or a slow sine
+            for (let x = 0; x < w; x++) {
+                let t = (x / w) * Math.PI * 6;
+                // Pure signal
+                let s_t = Math.sin(t); 
+                
+                // Gaussian-like noise (Box-Muller transform approx)
+                let u = 1 - Math.random();
+                let v = Math.random();
+                let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+                let n_t = z * noiseAmplitude;
+                
+                const scaledY = midY - (s_t * (h / 4)) - n_t;
+                
+                if (x === 0) ctx.moveTo(x, scaledY);
+                else ctx.lineTo(x, scaledY);
+            }
+            ctx.stroke();
+        }
+
+        // Initialize canvases on load and on resize
+        window.onload = function() {
+            drawFourier();
+            drawAwgn();
+        };
+        
+        window.addEventListener('resize', function() {
+            drawFourier();
+            drawAwgn();
+        });
+    </script>
+</body>
+</html>
