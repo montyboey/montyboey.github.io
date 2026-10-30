@@ -77,7 +77,7 @@
             top: 100%;
             left: 0;
             background-color: #ffffff;
-            min-width: 220px;
+            min-width: 250px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.08);
             border: 1px solid #e2e8f0;
             border-radius: 6px;
@@ -341,6 +341,7 @@
                         <div class="divider"></div>
                         <span class="header-label">Subject Toolkits</span>
                         <a href="/embedded-systems.html">Embedded Systems</a>
+                        <a href="/communication-systems.html">Communication Systems</a>
                     </div>
                 </div>
                 <a href="/focus.html">Focus</a>
@@ -363,6 +364,7 @@
     </header>
 
     <main>
+        <!-- SECTION 1: THE 3 C'S -->
         <section id="three-c" class="section-block">
             <h2>1. The 3 C's Learning Cycle</h2>
             <p>Most students struggle not from a lack of intellect, but from mistaking familiarity for true retention. Passive habits (such as highlighting pages, re-reading passages, or copying lecture slides word-for-word) give an illusion of competence. Real learning requires working through the continuous three-stage cycle:</p>
@@ -395,6 +397,7 @@
             </table>
         </section>
 
+        <!-- SECTION 2: ACTIVE RECALL -->
         <section id="active-recall" class="section-block">
             <h2>2. Active Recall & The Testing Effect</h2>
             <p>Every time your brain searches its memory banks to retrieve an answer without looking at the source, the underlying neural pathways grow stronger. Passive exposure does not build long-term memory; active retrieval does.</p>
@@ -424,6 +427,7 @@
             </div>
         </section>
 
+        <!-- SECTION 3: SPACED REPETITION -->
         <section id="spaced-rep" class="section-block">
             <h2>3. Spaced Repetition Engine</h2>
             <p>Hermann Ebbinghaus proved that human memory decays exponentially along a <em>Forgetting Curve</em>. Reviewing a topic at calculated intervals flattens this curve, turning short-term memories into permanent knowledge.</p>
@@ -451,6 +455,7 @@
             </div>
         </section>
 
+        <!-- SECTION 4: HIGH-YIELD NOTES -->
         <section id="note-secrets" class="section-block">
             <h2>4. High-Yield Note-Taking Principles</h2>
             <p>Notes are meant to serve as an <strong>extension of your thinking</strong>, not a passive transcription service.</p>
@@ -463,22 +468,24 @@
             </ul>
         </section>
 
+        <!-- SECTION 5: FEYNMAN TECHNIQUE -->
         <section id="feynman" class="section-block">
             <h2>5. The Feynman Technique Sandbox</h2>
             <p>Physicist Richard Feynman argued that if you cannot explain a concept to a child using simple language, you do not truly understand it yourself.</p>
 
             <div class="interactive-box">
                 <h4>Simplicity & Jargon Checker</h4>
-                <p>Type an explanation of a technical concept using simple, conversational words. Our analyser will identify overly long sentences and complex jargon so you can simplify your delivery.</p>
+                <p>Type an explanation of a technical concept using simple, conversational words. Our analyzer will identify overly long sentences and complex jargon so you can simplify your delivery.</p>
                 <div class="input-group">
                     <textarea id="feynman-text" rows="3" placeholder="Explain how memory works, how a cache operates, or what an FPGA does using simple words..."></textarea>
                 </div>
-                <button class="btn" onclick="checkFeynman()">Analyse Explanation</button>
+                <button class="btn" onclick="checkFeynman()">Analyze Explanation</button>
 
                 <div id="feynman-results" class="result-box" style="display:none;"></div>
             </div>
         </section>
 
+        <!-- SECTION 6: SUBJECT TOOLKITS -->
         <section id="subjects" class="section-block">
             <h2>6. Dedicated Subject Toolkits</h2>
             <p>Apply these learning frameworks directly to specific engineering and technical fields using our dedicated subject guides and interactive simulators:</p>
@@ -489,6 +496,14 @@
                     <p style="margin: 0; font-size: 0.9rem; color: #718096;">FPGAs, VHDL synthesizability, RISC vs CISC, stack call frames, MMIO bitboards, and real-time scheduling.</p>
                 </div>
                 <a href="/embedded-systems.html" class="btn">Launch Guide →</a>
+            </div>
+
+            <div class="subject-card">
+                <div>
+                    <h3 style="margin: 0 0 4px 0;">Communication Systems & DSP</h3>
+                    <p style="margin: 0; font-size: 0.9rem; color: #718096;">Signal analysis, Fourier series, AWGN channels, correlator demodulation, and power spectral density.</p>
+                </div>
+                <a href="/communication-systems.html" class="btn">Launch Guide →</a>
             </div>
 
             <div class="subject-card" style="opacity: 0.7;">
