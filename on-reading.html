@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On Reading | Monty Boey</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: #2d3748;
+            background-color: #f7fafc;
+            padding: 20px;
+        }
+
+        header {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 0 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a202c;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #2b6cb0;
+        }
+
+        /* Dropdown Navigation Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .dropdown > a {
+            margin-left: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 0;
+            z-index: 50;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            margin: 0;
+            padding: 8px 16px;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f7fafc;
+            color: #2b6cb0;
+        }
+
+        .dropdown-menu .divider {
+            height: 1px;
+            background: #edf2f7;
+            margin: 6px 0;
+        }
+
+        .dropdown-menu .header-label {
+            padding: 4px 16px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a0aec0;
+            font-weight: 700;
+        }
+
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 40px;
+        }
+
+        .article-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 20px;
+        }
+
+        .article-title {
+            font-size: 2.2rem;
+            color: #1a202c;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            color: #2d3748;
+        }
+
+        .article-body blockquote {
+            border-left: 4px solid #2b6cb0;
+            padding-left: 16px;
+            margin: 24px 0;
+            font-style: italic;
+            color: #4a5568;
+        }
+
+        .article-body blockquote footer {
+            margin-top: 8px;
+            font-style: normal;
+            font-size: 0.95rem;
+            color: #718096;
+            text-align: left;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            max-width: 800px;
+            margin: 60px auto 20px auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/" class="logo">Monty Boey</a>
+            <div class="nav-links">
+                <a href="/about.html">About</a>
+                <a href="/articles.html" class="active">Articles</a>
+                <div class="dropdown">
+                    <a href="/learning.html">Learning ▾</a>
+                    <div class="dropdown-menu">
+                        <span class="header-label">Methodology</span>
+                        <a href="/learning.html">Study System Hub</a>
+                        <div class="divider"></div>
+                        <span class="header-label">Subject Toolkits</span>
+                        <a href="/embedded-systems.html">Embedded Systems</a>
+                        <a href="/communication-systems.html">Communication Systems</a>
+                    </div>
+                </div>
+                <a href="/focus.html">Focus</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <article class="article-container">
+            <a href="/articles.html" class="back-link">← Back to Articles</a>
+            
+            <header class="article-header">
+                <h1 class="article-title">On Reading</h1>
+                <div class="article-meta">Published November 2026 • 4 min read</div>
+            </header>
+
+            <div class="article-body">
+                <p>Whether or not we call ourselves a reader, we are. I mean, by the very fact that reading and literacy is taken for granted in the no doubt Western society you read this from. More so, what I mean by this, is that reading has been so ingrained in our civilisations, from the restaurant menu, to the street signs, and the endless scroll of reels. Without this very much prevalent skill, it would be hard to imagine life.</p>
+
+                <p>But I think when we think of the word reader, we think of some likely bespectacled individual curled up in the corner of a lonely room with no responsibility or notion of the "real world" other than his or her book and a takeaway cup of coffee, or worse yet, matcha. Oh, and of course, headphones of some description. Wired if they're really going for it. What I mean to say, is that reading as a medium has almost become shunned or discarded as merely "performative". Why indulge in a worn paperback or the latest by some BookTok influencer when you can get real media through a screen? Hell, maybe they're right. I mean, who has time for fiction? There's always a movie or TV show to binge on Netflix. News? Social media has that covered. And it's oh so much easier to stomach in bite-sized chunks. And of course, if we ever need to learn something ChatGPT is always at our beck and call (side note, I always thought this was "becking call" until Google proved me wrong).</p>
+
+                <p>So clearly, why books? And to make myself clear, I mean the e-book and audiobook versions also. There are far more accessible alternatives. And better yet, continually updating, adapting, and evolving to our ever changing needs and tastes. To be blunt, there are likely to be more than enough reasons on either side of this debate, but there is almost no reasonable decision to ever say that books are pointless. Prone to obsolescence? In fiction, no doubt the world in which a writer may have conjured up their characters and setting has changed markedly and modernity becomes antiquity, but what remains is the human nature that drives our beloved characters to behave the way they do. Now, trickier is what happens to non-fiction when facts become outdated? The easy answer is that we take everything with a grain of salt (even written prose!) and seek solutions from a range of sources. But perhaps, like how events mark the evolution of human existence, so-called outdated books mark the evolution of human thought.</p>
+
+                <blockquote>
+                    "A book is proof that humans are capable of working magic. One glance at it and you hear the voice of another person, perhaps someone dead for 1,000 years. Across the millennia, an author is speaking clearly and silently inside your head, directly to you."
+                    <footer>- Carl Sagan</footer>
+                </blockquote>
+
+                <p>So where to from here?</p>
+
+                <p>While it might be a bit more contrived to froth over the feeling of a "real" book, the smell of the pages, and the ability to just flick through without much care, there is merit in the analogness of a physical book. The infinite scroll is ever present in how we now react to and digest media. There is always another post, reel, article and news piece just a scroll away. And moreover, this becomes almost reactionary. A reflex really. By the time we come to our senses and realise how much time we've spent in this infinite scroll, we realise how little we just took in. Yes, in the moment we laughed at the meme, we gasped at the latest bit of news, and felt some disproportionate outrage at the post that was clearly intended to incite a reaction. But who can really remember what mattered? We save some of these posts for later, repost the ones that we want our followers to see, curating a sort of collection that defines who we are as people. A book forces you to slow down and learn something through the mind of the author. Less personalised? Maybe. But maybe also, what we need is the ability to get out of our own heads and learn to see things through the eyes of other people as well.</p>
+
+                <p>In a world where everything points inwards, consuming the media that agrees with us, reinforcing our own worldview, books offer the ability to expand that worldview. And sure, at the end of the day we can choose what we read, keep reading the topics that interest us, wow us, and entertain us, but we don't have to do this ourselves, because we go on this journey with the author. And by creating this connection, we lead ourselves to other areas of interest.</p>
+
+                <p>Nothing stays the same. Not the words we use day to day. Not the knowledge that fills even the most up-to-date of libraries. But we can choose where we go next.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <p>© 2026 Monty Boey. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
