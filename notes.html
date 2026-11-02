@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Workspace | Monty Boey</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #2d3748;
+            background-color: #f7fafc;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevents bounce scrolling on iPad */
+        }
+
+        /* Standard Site Navigation */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a202c;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #2b6cb0;
+        }
+
+        /* App Layout */
+        .app-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #f7fafc;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            font-size: 1rem;
+            color: #1a202c;
+        }
+
+        .note-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .note-item {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .note-item:hover {
+            border-color: #2b6cb0;
+        }
+
+        .note-item.active {
+            background: #ebf8ff;
+            border-color: #3182ce;
+        }
+
+        .note-title-display {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .note-date {
+            font-size: 0.75rem;
+            color: #718096;
+        }
+
+        /* Main Workspace */
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .toolbar {
+            padding: 12px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        .btn {
+            background: #2b6cb0;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #2c5282;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+        }
+
+        .btn-outline:hover, .btn-outline.active {
+            background: #edf2f7;
+            color: #1a202c;
+            border-color: #a0aec0;
+        }
+
+        .btn-danger {
+            background: #fff5f5;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        .color-picker {
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .divider {
+            width: 1px;
+            height: 24px;
+            background: #e2e8f0;
+            margin: 0 4px;
+        }
+
+        /* Editor Area */
+        .editor-container {
+            flex: 1;
+            position: relative;
+            overflow: auto; /* Allows scrolling when typing */
+            padding: 40px;
+        }
+
+        .note-title-input {
+            width: 100%;
+            font-size: 2rem;
+            font-weight: 700;
+            border: none;
+            outline: none;
+            color: #1a202c;
+            margin-bottom: 20px;
+            background: transparent;
+        }
+
+        .text-layer {
+            width: 100%;
+            min-height: 500px;
+            outline: none;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #2d3748;
+            z-index: 1;
+        }
+
+        /* Canvas for Drawing */
+        .canvas-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            pointer-events: none; /* Disabled by default, activated in draw mode */
+            touch-action: none; /* Prevents iPad scrolling when drawing */
+        }
+
+        .canvas-layer.active {
+            pointer-events: auto;
+        }
+        
+        /* Audio Player */
+        .audio-container {
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .audio-container.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .editor-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Site Header -->
+    <header>
+        <a href="/" class="logo">Monty Boey</a>
+        <div class="nav-links">
+            <a href="/about.html">About</a>
+            <a href="/articles.html">Articles</a>
+            <a href="/learning.html">Learning</a>
+            <a href="/focus.html">Focus</a>
+            <a href="/notes.html" class="active">Notes</a>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>My Notebooks</h3>
+                <button class="btn" onclick="createNewNote()">+ New</button>
+            </div>
+            <div class="note-list" id="note-list">
+                <!-- Notes will populate here -->
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            <div class="toolbar">
+                <button class="btn btn-outline active" id="mode-type" onclick="setMode('type')">⌨️ Type</button>
+                <button class="btn btn-outline" id="mode-draw" onclick="setMode('draw')">✏️ Draw</button>
+                
+                <div class="divider"></div>
+                
+                <input type="color" id="pen-color" class="color-picker" value="#2b6cb0" title="Pen Color">
+                <button class="btn btn-outline" onclick="setEraser()" id="btn-eraser">Eraser</button>
+                <button class="btn btn-outline" onclick="clearCanvas()">Clear Ink</button>
+                
+                <div class="divider"></div>
+                
+                <button class="btn btn-outline" id="btn-record" onclick="toggleRecording()">🎤 Record Audio</button>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <button class="btn btn-danger" onclick="deleteCurrentNote()">Delete</button>
+                <button class="btn" onclick="saveNote()">💾 Save</button>
+            </div>
+
+            <div class="editor-container" id="editor-scroll">
+                <input type="text" class="note-title-input" id="note-title" placeholder="Untitled Note">
+                
+                <div class="audio-container" id="audio-container">
+                    <audio id="audio-playback" controls></audio>
+                    <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem; margin-top: 4px;" onclick="clearAudio()">Remove Audio</button>
+                </div>
+
+                <div class="text-layer" id="text-editor" contenteditable="true" placeholder="Start typing here..."></div>
+                
+                <!-- Canvas dimension set via JS to match content size -->
+                <canvas class="canvas-layer" id="draw-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        let notes = JSON.parse(localStorage.getItem('monty_notes')) || [];
+        let currentNoteId = null;
+        let mode = 'type'; // 'type' or 'draw'
+        
+        // --- Canvas Setup (iPad Apple Pencil Support) ---
+        const canvas = document.getElementById('draw-canvas');
+        const ctx = canvas.getContext('2d');
+        const textEditor = document.getElementById('text-editor');
+        const editorScroll = document.getElementById('editor-scroll');
+        
+        let isDrawing = false;
+        let isEraser = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function resizeCanvas() {
+            // Match canvas size to the scrolling container's scroll height
+            canvas.width = editorScroll.scrollWidth - 80; // account for padding
+            canvas.height = Math.max(editorScroll.scrollHeight, 800);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Pointer events for accurate Stylus/Touch/Mouse tracking
+        canvas.addEventListener('pointerdown', (e) => {
+            if (mode !== 'draw') return;
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            if (!isDrawing || mode !== 'draw') return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const currentX = e.clientX - rect.left;
+            const currentY = e.clientY - rect.top;
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(currentX, currentY);
+            
+            if (isEraser) {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = 20; // Thicker for eraser
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = document.getElementById('pen-color').value;
+                // Basic pressure simulation (if available from Apple Pencil)
+                let pressure = e.pressure !== 0 ? e.pressure : 0.5;
+                ctx.lineWidth = pressure * 6; 
+            }
+            
+            ctx.stroke();
+            lastX = currentX;
+            lastY = currentY;
+        });
+
+        canvas.addEventListener('pointerup', () => isDrawing = false);
+        canvas.addEventListener('pointerout', () => isDrawing = false);
+
+        // --- Tools & Modes ---
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('mode-type').classList.toggle('active', mode === 'type');
+            document.getElementById('mode-draw').classList.toggle('active', mode === 'draw');
+            
+            if (mode === 'draw') {
+                canvas.classList.add('active');
+                textEditor.style.pointerEvents = 'none'; // Prevent keyboard popping up
+                editorScroll.style.overflow = 'hidden'; // Lock scrolling to draw
+                isEraser = false;
+                document.getElementById('btn-eraser').classList.remove('active');
+            } else {
+                canvas.classList.remove('active');
+                textEditor.style.pointerEvents = 'auto';
+                editorScroll.style.overflow = 'auto'; // Re-enable scrolling
+            }
+        }
+
+        function setEraser() {
+            setMode('draw');
+            isEraser = true;
+            document.getElementById('btn-eraser').classList.add('active');
+        }
+
+        function clearCanvas() {
+            if(confirm("Are you sure you want to clear all ink?")) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // --- Audio Recording ---
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let currentAudioBase64 = null;
+
+        async function toggleRecording() {
+            const btn = document.getElementById('btn-record');
+            
+            if (isRecording) {
+                mediaRecorder.stop();
+                btn.textContent = '🎤 Record Audio';
+                btn.classList.remove('btn-danger');
+                isRecording = false;
+                return;
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    document.getElementById('audio-playback').src = audioUrl;
+                    document.getElementById('audio-container').classList.add('active');
+                    
+                    // Convert to Base64 for local storage (Warning: uses space quickly)
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = () => {
+                        currentAudioBase64 = reader.result;
+                    }
+                };
+                
+                mediaRecorder.start();
+                btn.textContent = '⏹ Stop Recording';
+                btn.classList.add('btn-danger');
+                isRecording = true;
+            } catch (err) {
+                alert('Microphone access denied or unavailable.');
+            }
+        }
+
+        function clearAudio() {
+            currentAudioBase64 = null;
+            document.getElementById('audio-playback').src = '';
+            document.getElementById('audio-container').classList.remove('active');
+        }
+
+        // --- Storage & Note Management ---
+        function saveNote() {
+            if (!currentNoteId) {
+                currentNoteId = Date.now().toString();
+            }
+
+            const title = document.getElementById('note-title').value || 'Untitled Note';
+            const textContent = textEditor.innerHTML;
+            const inkData = canvas.toDataURL(); // Saves drawing as base64 image
+
+            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+            const noteData = {
+                id: currentNoteId,
+                title: title,
+                text: textContent,
+                ink: inkData,
+                audio: currentAudioBase64,
+                date: new Date().toLocaleDateString()
+            };
+
+            if (noteIndex > -1) {
+                notes[noteIndex] = noteData;
+            } else {
+                notes.unshift(noteData);
+            }
+
+            try {
+                localStorage.setItem('monty_notes', JSON.stringify(notes));
+                renderSidebar();
+                alert('Note saved locally.');
+            } catch (e) {
+                alert('Storage limit reached! Try removing audio recordings or large drawings.');
+            }
+        }
+
+        function loadNote(id) {
+            const note = notes.find(n => n.id === id);
+            if (!note) return;
+            
+            currentNoteId = note.id;
+            document.getElementById('note-title').value = note.title;
+            textEditor.innerHTML = note.text;
+            
+            // Load Audio
+            currentAudioBase64 = note.audio || null;
+            if (currentAudioBase64) {
+                document.getElementById('audio-playback').src = currentAudioBase64;
+                document.getElementById('audio-container').classList.add('active');
+            } else {
+                clearAudio();
+            }
+
+            // Load Ink
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (note.ink) {
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0);
+                img.src = note.ink;
+            }
+            
+            renderSidebar();
+            setMode('type');
+        }
+
+        function createNewNote() {
+            currentNoteId = null;
+            document.getElementById('note-title').value = '';
+            textEditor.innerHTML = '';
+            clearAudio();
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            renderSidebar();
+            setMode('type');
+        }
+
+        function deleteCurrentNote() {
+            if(!currentNoteId) return;
+            if(confirm("Delete this note forever?")) {
+                notes = notes.filter(n => n.id !== currentNoteId);
+                localStorage.setItem('monty_notes', JSON.stringify(notes));
+                createNewNote();
+            }
+        }
+
+        function renderSidebar() {
+            const list = document.getElementById('note-list');
+            list.innerHTML = '';
+            
+            notes.forEach(note => {
+                const div = document.createElement('div');
+                div.className = `note-item ${note.id === currentNoteId ? 'active' : ''}`;
+                div.onclick = () => loadNote(note.id);
+                div.innerHTML = `
+                    <div class="note-title-display">${note.title}</div>
+                    <div class="note-date">${note.date}</div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        // Initialize
+        resizeCanvas();
+        renderSidebar();
+        if (notes.length > 0) {
+            loadNote(notes[0].id);
+        }
+    </script>
+</body>
+</html>
